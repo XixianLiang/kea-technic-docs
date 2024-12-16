@@ -1,0 +1,8 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "Kea"
+authors = [{name = "Xixian Liang, Xiangchen Shen, Bo Ma", email = "xixian@stu.ecnu.edu.cn"}]
+dynamic = ["version", "description"]
