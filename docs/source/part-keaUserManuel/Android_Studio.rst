@@ -21,7 +21,7 @@
 MacOS 和 Linux
 -------------------------------
 
-在你的电脑上安装了 Android Studio。你需要做的是导出 PATH 变量，以便在终端中可用。
+在你的电脑上安装了 Android Studio。你需要做的是将 Android sdk 其添加至 PATH 环境变量，让其在终端中可用。
 
 有关详细信息，请参见 `Android Studio 文档：环境变量 <https://developer.android.com/tools/variables>`_。
 
@@ -30,7 +30,7 @@ MacOS 和 Linux
 
 在此窗口中，查看 :guilabel:`SDK 工具`，安装 **Android SDK 平台工具**。
 
-.. image:: ../../images/android_home_path.jpg
+.. figure:: ../../images/android_home_path.jpg
     :align: center
 
     Android Studio 中 Android SDK 路径的示例
@@ -44,7 +44,7 @@ MacOS 和 Linux
     export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest:$ANDROID_HOME/platform-tools:$PATH"
 
 
-``source`` 文件以激活修改。
+``source`` shell的配置文件以激活修改。
 
 .. important:: text
 
@@ -60,7 +60,7 @@ Windows
 
 在此窗口中，查看 :guilabel:`SDK 工具`，安装 **Android SDK 平台工具**。
 
-.. image:: ../../images/android_home_path_win.png
+.. figure:: ../../images/android_home_path_win.png
     :align: center
 
     Android Studio 中 Android SDK 路径的示例
