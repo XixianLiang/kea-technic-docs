@@ -1,0 +1,71 @@
+配置 HarmonyOS 环境
+=======================================
+
+.. tip:: 
+
+   本节目标
+
+   **1. 让 `hdc` 命令可用**
+   
+   Kea 依赖 hdc 命令与安卓设备进行交互。关键是将 hdc 添加到 PATH 环境变量中。
+
+   **2. 连接真机或使用模拟器**
+
+
+1. 安装 DevEco Studio
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+下载并安装 DevEco Studio: `下载 DevEco Studio <https://developer.huawei.com/consumer/cn/deveco-studio/>`_.
+
+
+2. 安装并配置 HarmonyOS SDK
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+打开 DevEco Studio， 安装 HamonyOS SDK :guilabel:`DevEco Studio` -> :guilabel:`preferences` -> :guilabel:`OpenHarmony SDK`.
+
+.. figure:: ../../images/DevEco-sdk.jpg
+   :align: center
+
+   在 DevEco Studio 中设置 SDK
+
+点击 :guilabel:`edit`。设置您的 SDK 路径并安装 OpenHarmony SDK 工具链。API 版本应为 12+（5.0+）。
+
+.. figure::  ../../images/DevEco-toolchains.jpg
+   :align: center
+
+   下载 toolchains (API 12+)
+
+添加sdk toolchains到环境变量
+
+
+
+MacOS 和 Linux
+-----------------------------
+
+.. code-block:: bash
+
+   # macOS and Linux
+   export HARMONY_SDK_HOME="<Your path to opensdk home>"
+   export PATH="$HARMONY_SDK_HOME/12/toolchains"
+
+
+``source`` shell的配置文件以激活修改。
+
+Windows 系统
+-----------------------------
+
+.. code-block:: bash
+
+   # Windows
+   HARMONY_SDK_HOME: "<Your path to opensdk home>"
+   PATH: %HARMONY_SDK_HOME%\12\toolchains
+
+.. important::
+   在终端中运行 ``hdc``， 查看命令是否可用。
+
+
+3. 运行一个模拟器
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+根据此指南运行一个模拟器： `管理及运行模拟器 <https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V13/ide-emulator-management-V13>`_ 
+
+.. important::
+   在终端中运行 ``hdc list targets``。 您可以看到模拟器以一个环回地址套接字(127.0.0.1:port)的形式提供。

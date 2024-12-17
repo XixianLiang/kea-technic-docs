@@ -21,14 +21,14 @@ Contents
 --------
 
 .. toctree::
-   :caption: 移动应用基于性质的测试
+   :caption: 概述
 
    part-theory/introduction
 
 .. toctree::
    :caption: 用户手册
 
-   part-keaUserManuel/Android_Studio
+   part-keaUserManuel/envirnment_setup.rst
    part-keaUserManuel/first_property
    part-keaUserManuel/api
    part-keaUserManuel/tutorial
@@ -37,18 +37,14 @@ Contents
    part-keaUserManuel/bug_report
 
 .. toctree::
-   :caption: 用户手册
+   :caption: 设计手册
 
    part-designDocument/intro.rst
    
-.. toctree::
-   :caption: PART3: KEA FOR HarmonyOS
 
-   part-keaForHarmonyOS/harmonyos_setup
-   part-keaForHarmonyOS/harmonyos_api
 
 .. toctree::
-   :caption: PART4: APPENDIX
+   :caption: 实验与结果
 
    part-Appendix/trophies
    part-Appendix/PDL
