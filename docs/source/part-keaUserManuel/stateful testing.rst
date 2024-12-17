@@ -1,28 +1,26 @@
-Stateful Testing
+带状态的测试
 ========================
 
-Stateful Testing is a software testing method that primarily focuses on the behavior of a system in different states and the transitions between those states.
-Its principle lies in tracking the current state of the system to verify how input operations affect the system's output and state changes.
-This method is widely applied in scenarios that require state management, such as user interfaces and database transactions.
-By designing state-based test cases, it ensures that the system functions correctly across various states, enhancing the reliability of the software and the user experience.
+带状态的测试是一种软件测试方法，专注于系统在不同状态下的行为和响应。
+其原理基于状态管理和状态转移，通过设计测试用例来覆盖各种状态及其转换，以确保系统在不同条件下的正确性和一致性。
+此方法适合应用于需要保持状态前后一致的应用程序，过设计带状态的测试用例，
+确保系统在各种状态下正常运行，从而增强软件的可靠性和用户体验。
 
-In mobile apps, some functionalities can move from one state to another state based on certain inputs or actions.
-Thus, it need additional data structure to support this.
+在移动应用中，一些功能可以根据特定的输入或操作从一个状态转换到另一个状态。因此，需要额外的数据结构来支持这一点。
 
-| Here Kea refers to `Hypothesis's Stateful Testing <https://hypothesis.readthedocs.io/en/latest/stateful.html>`_.
+在 Kea 中，当你编写需要记录状态信息的性质时，可以使用带状态的测试。如以下代码所示，当你想在设备上进行文件或文件夹的相关操作时，例如创建文件、删除文件或重命名文件。
 
-In Kea, you can use stateful testing when you write some properties that require stateful information.
-Just like following codes, when you want to manipulate files or folders on devices, such us create a file, delete a file or rename the file.
+你可以编写以下代码：
 
 .. code:: Python
 
-    _files = Kea.set_bundle("files")
+    _files = Kea.Bundle("files")
 
-The Bundle class contains the following functions:
+Bundle 类包含以下函数：
 
 * add(value: str)
 
-Add a new value to the current Bundle object.
+向当前的 Bundle 对象内添加一个新值。
 
 .. code-block:: Python
 
@@ -30,7 +28,7 @@ Add a new value to the current Bundle object.
 
 * delete(value: str)
 
-Delete a value from the current Bundle object.
+从当前的 Bundle 对象中删除一个值。
 
 .. code-block:: Python
 
@@ -38,7 +36,7 @@ Delete a value from the current Bundle object.
 
 * update(value: str, new_value: str)
 
-Update the value from ``value`` to ``new_value``
+将当前对象中 ``value`` 的值更新为 ``new_value``
 
 .. code-block:: Python
 
@@ -46,7 +44,7 @@ Update the value from ``value`` to ``new_value``
 
 * get_all_data()
 
-This function will return a list of values of current Bundle object.
+该函数会返回当前 Bundle 对象村春的值列表。
 
 .. code-block:: Python
 
@@ -54,7 +52,7 @@ This function will return a list of values of current Bundle object.
 
 * get_random_value(value_len: int = 10)
 
-This function will randomly generate a value and return. So you can call it before using the ``add`` and ``update`` function.
+该函数会随机生成一个值并返回。因此，你可以在使用 ``add`` 和 ``update`` 函数之前调用它。
 
 .. code-block:: Python
 
@@ -63,21 +61,20 @@ This function will randomly generate a value and return. So you can call it befo
 
 * get_random_data()
 
-This function will randomly select a value from the existing values in the current Bundle object.
-So you can call it before using the ``delete`` and ``update`` function.
+该函数会从当前 Bundle 对象中现存储的值中随机选择一个值并返回。因此，你可以在使用 delete 和 update 函数之前调用它。
 
 .. code-block:: Python
 
     file_name = self._files.get_random_data()
     self._files.delete(selected_file_name)
 
-Here is a complete example to show how to use Kea's stateful testing when you define property.
-This example will show how to use stateful testing in the app `Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_, it is a file management app,
-allows users to manipulate files or folders on devices. These properties are defined for testing whether data manipulation of
-the file system have some errors. Stateful testing is essential in this situation, you can use stateful testing to store all the folders created by Kea,
-and can manipulate them along the whole testing process.
+接下来是一个完整的示例，展示了如何在定义性质时使用 Kea 的状态测试。这个示例将展示如何在应用程序
+ `Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_中使用状态测试， ``Amaze`` 是一个文件管理应用，
+ 允许用户在设备上操作文件或文件夹。这些性质是为了测试文件系统的数据操作是否存在错误而定义的。
+ 在这种情况下，带状态的测试至关重要，你可以使用 ``Bundle`` 来存储 Kea 创建的所有文件夹，并在整个测试过程中对它们进行操作。
 
-Firstly, you can define a ``create_file_should_exist`` property. Just return to the home directory, create a file and check whether the new file is exist.
+首先，你可以定义一个 ``create_file_should_exist`` 性质。该性质的实现步骤如下：返回到主目录；创建一个文件；检查新文件是否存在。
+这个属性可以确保在创建文件后，文件确实存在于预期的位置。
 
 .. image:: ../../images/CreateFile.png
             :align: center
@@ -86,11 +83,11 @@ Firstly, you can define a ``create_file_should_exist`` property. Just return to 
 
 .. code-block:: Python
 
-        @precondition(lambda self: d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists())
+        @precondition(lambda self: d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and
+                                   not d(textContains = "SDCARD").exists())
         @rule()
         def create_file_should_exist(self):
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index = 7).click()
+            d.swipe_ext("down", scale=0.9)
             d(description="Navigate up").click()
             d(resourceId="com.amaze.filemanager:id/design_menu_item_text", textContains="Internal Storage").click()
             d(resourceId="com.amaze.filemanager:id/sd_main_fab").click()
@@ -102,7 +99,7 @@ Firstly, you can define a ``create_file_should_exist`` property. Just return to 
             d(scrollable=True).scroll.to(resourceId="com.amaze.filemanager:id/firstline", text=file_name)
             assert d(text=file_name).exists()
 
-Secondly, you can define a ``change_filename_should_follow`` property. Just return to the home directory, choose a file change its name and check whether the file is changed.
+接下来, 你可以定义一个 ``change_filename_should_follow`` 性质。 该性质的实现步骤如下：返回到主目录，随机选择一个文件，改变它的名称，并检查原来名称的文件是否消失并且新名称的文件是否存在。
 
 .. image:: ../../images/RenameFile.png
             :align: center
@@ -111,11 +108,12 @@ Secondly, you can define a ``change_filename_should_follow`` property. Just retu
 
 .. code-block:: Python
 
-        @precondition(lambda self: d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and self._files.get_all_data())
+        @precondition(lambda self:  self._files.get_all_data() and
+                                    d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and
+                                    not d(resourceId="com.amaze.filemanager:id/action_mode_close_button").exists())
         @rule()
         def change_filename_should_follow(self):
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index=7).click()
+            d.swipe_ext("down", scale=0.9)
             d(description="Navigate up").click()
             d(resourceId="com.amaze.filemanager:id/design_menu_item_text", textContains="Internal Storage").click()
             file_name = self._files.get_random_data()
@@ -127,16 +125,16 @@ Secondly, you can define a ``change_filename_should_follow`` property. Just retu
             d.send_keys(new_name, clear=True)
             d(resourceId="com.amaze.filemanager:id/md_buttonDefaultPositive").click()
             self._files.update(file_name, new_name)
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index=7).click()
+            d.swipe_ext("down", scale=0.9)
+            d(resourceId="com.amaze.filemanager:id/home").click()
             d(scrollable=True).scroll.to(resourceId="com.amaze.filemanager:id/firstline", text=new_name)
             assert d(text=new_name).exists()
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index=7).click()
+            d.swipe_ext("down", scale=0.9)
+            d(resourceId="com.amaze.filemanager:id/home").click()
             d(scrollable=True).scroll.to(resourceId="com.amaze.filemanager:id/firstline", text=file_name)
             assert not d(text=file_name).exists()
 
-Thirdly, you can define a ``del_file_should_disappear`` property. Just return to the home directory, delete a file and check whether the file is exist.
+最后, 你可以定义一个 ``del_file_should_disappear`` 性质。返回到主目录，删除一个文件，并检查该文件是否存在。
 
 .. image:: ../../images/DelFile.png
             :align: center
@@ -145,11 +143,12 @@ Thirdly, you can define a ``del_file_should_disappear`` property. Just return to
 
 .. code-block:: Python
 
-        @precondition(lambda self: d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and self._files.get_all_data())
+        @precondition(lambda self:  self._files.get_all_data() and
+                                    d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and
+                                    not d(resourceId="com.amaze.filemanager:id/action_mode_close_button").exists())
         @rule()
         def del_file_should_disappear(self):
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index=7).click()
+            d.swipe_ext("down", scale=0.9)
             d(description="Navigate up").click()
             d(resourceId="com.amaze.filemanager:id/design_menu_item_text", textContains="Internal Storage").click()
             file_name = self._files.get_random_data()
@@ -160,13 +159,7 @@ Thirdly, you can define a ``del_file_should_disappear`` property. Just return to
             d(text="Delete").click()
             d(resourceId="com.amaze.filemanager:id/md_buttonDefaultPositive").click()
             self._files.delete(selected_file_name)
-            d(resourceId="com.amaze.filemanager:id/pathbar").click()
-            d(resourceId="com.amaze.filemanager:id/lin").child(index=7).click()
+            d.swipe_ext("down", scale=0.9)
+            d(resourceId="com.amaze.filemanager:id/home").click()
             d(scrollable=True).scroll.to(resourceId="com.amaze.filemanager:id/firstline", text=file_name)
             assert not d(text=selected_file_name).exists()
-
-.. note::
-
-    The  above method can use for both single property file and multiple property files.
-    If you only want to use stateful testing for single one, you can use ``_files = Bundle("files")`` directly
-    to instantiate Bundle instead of using class method of Kea ``_files = Kea.set_bundle("files")``.
