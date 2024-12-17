@@ -1,60 +1,71 @@
-Set up HarmonyOS environment
+配置 HarmonyOS 环境
 =======================================
 
 .. tip:: 
 
-   What you need to do in this chapter:
+   本节目标
 
-   **1. Make the `hdc` cmd available**
+   **1. 让 `hdc` 命令可用**
    
-   Kea for relies on ``hdc`` cmd to interact with android devices. The key is to make the HDC
-   cmd available by adding it into PATH var.
+   Kea 依赖 hdc 命令与安卓设备进行交互。关键是将 hdc 添加到 PATH 环境变量中。
 
-   **2. Connect a device or start an emulator on your PC**
+   **2. 连接真机或使用模拟器**
 
 
-1. Install DevEco Studio
+1. 安装 DevEco Studio
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Download and install DevEco Stuido: `Download DevEco Stuido <https://developer.huawei.com/consumer/cn/deveco-studio/>`_.
+下载并安装 DevEco Studio: `下载 DevEco Studio <https://developer.huawei.com/consumer/cn/deveco-studio/>`_.
 
 
-2. Set up cmdline tools (hdc)
+2. 安装并配置 HarmonyOS SDK
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Open DevEco Studio. Go to :guilabel:`DevEco Studio` -> :guilabel:`preferences` -> :guilabel:`OpenHarmony SDK`.
+打开 DevEco Studio， 安装 HamonyOS SDK :guilabel:`DevEco Studio` -> :guilabel:`preferences` -> :guilabel:`OpenHarmony SDK`.
 
 .. figure:: ../../images/DevEco-sdk.jpg
    :align: center
 
-   sdk setting in DevEco Studio
+   在 DevEco Studio 中设置 SDK
 
-Click :guilabel:`edit`. Set your sdk path and install the openharmony SDK - toolchains. **The api version should be 12+ (5.0+).**
+点击 :guilabel:`edit`。设置您的 SDK 路径并安装 OpenHarmony SDK 工具链。API 版本应为 12+（5.0+）。
 
 .. figure::  ../../images/DevEco-toolchains.jpg
    :align: center
 
-   Download toolchains (API 12+)
+   下载 toolchains (API 12+)
 
-Export the path to your system. If you have problem setting up your environment vars,
-you can checkout :ref:`path_setup` for details.
+添加sdk toolchains到环境变量
+
+
+
+MacOS 和 Linux
+-----------------------------
 
 .. code-block:: bash
 
    # macOS and Linux
-   HARMONY_SDK_HOME="<Your path to opensdk home>"
+   export HARMONY_SDK_HOME="<Your path to opensdk home>"
    export PATH="$HARMONY_SDK_HOME/12/toolchains"
+
+
+``source`` shell的配置文件以激活修改。
+
+Windows 系统
+-----------------------------
+
+.. code-block:: bash
 
    # Windows
    HARMONY_SDK_HOME: "<Your path to opensdk home>"
    PATH: %HARMONY_SDK_HOME%\12\toolchains
 
 .. important::
-    Enter ``hdc`` in your terminal to check if the setup succeed.
+   在终端中运行 ``hdc``， 查看命令是否可用。
 
 
-3. Run an emulator
+3. 运行一个模拟器
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Checkout `Manage and run HarmonyOS emulator <https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V13/ide-emulator-management-V13>`_ to run an emulator.
+根据此指南运行一个模拟器： `管理及运行模拟器 <https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V13/ide-emulator-management-V13>`_ 
 
 .. important::
-    Enter ``hdc list targets`` in your terminal. You should see your emulator listed in a loopback address form.
+   在终端中运行 ``hdc list targets``。 您可以看到模拟器以一个环回地址套接字(127.0.0.1:port)的形式提供。
