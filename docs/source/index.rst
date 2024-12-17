@@ -34,6 +34,7 @@ Contents
    part-keaUserManuel/tutorial
    part-keaUserManuel/options
    part-keaUserManuel/stateful testing
+   part-keaUserManuel/bug_report
 
 .. toctree::
    :caption: 设计手册

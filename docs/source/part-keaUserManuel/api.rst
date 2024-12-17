@@ -1,31 +1,31 @@
 .. _pdl_api:
 
-PDL API 
-=================
+应用性质描述语言接口
+==========================
 
-PDL for Property Description Language. This is how kea interact with AUT(App under test).
+应用性质描述语言（PDL）是Kea与被测试应用交互的方式，用户可通过接口的调用来实现与被测移动应用的交互。
 
-UI events
+用户界面交互事件
 -----------------
 
 .. note::
 
-   Currently, kea uses `uiautomator2 <https://github.com/openatx/uiautomator2>`_ to interact with the app.
-   You can find more information in `uiautomator2 <https://github.com/openatx/uiautomator2>`_.
-   You can also use other tools to interact with the app, which can be easily implemented by modifying the `dsl.py`.
+   目前，kea的性质描述语言底层通过 `uiautomator2 <https://github.com/openatx/uiautomator2>`_ 作为交互工具，来进行与移动设备的交互。
 
-For example, to send the click event to the app, you can use the following code:
+例如，要向应用程序发送点击事件，您可以使用以下代码：
 
 .. code-block:: Python
 
    d(resourceId="player_playback_button").click()
 
 
-``d`` is the object of the uiautomator2.
-``resourceId`` sets the resource id of the element.
-``click()`` sends the click event to the element.
+``d`` 是 uiautomator2 的驱动。
 
-Here are some common operations:
+``resourceId`` 设置组件的编号，用于选择器定位组件。
+
+``click()`` 表示向该组件发送点击事件。
+
+下面是一些常用的交互事件:
 
 * click
 
@@ -59,38 +59,36 @@ Here are some common operations:
       d.press("home")
       d.press("back")
 
-You can use selector to identify the UI object in the current window.
+在定位组件时，可以使用以下选择器。
 
-Selector 
+选择器
 ---------------------
 
-you can also look at `uiautomator2 Selector <https://github.com/openatx/uiautomator2?tab=readme-ov-file#selector>`_.
-Selector is a handy mechanism to identify a specific UI object in the current window.  
-Selector supports below parameters.
+选择器是一种非常方便的机制，用于在用户界面中识别特定的组件。
 
-*  `text`, `textContains`, `textMatches`, `textStartsWith`
-*  `className`, `classNameMatches`
-*  `description`, `descriptionContains`, `descriptionMatches`, `descriptionStartsWith`
-*  `checkable`, `checked`, `clickable`, `longClickable`
-*  `scrollable`, `enabled`,`focusable`, `focused`, `selected`
-*  `packageName`, `packageNameMatches`
-*  `resourceId`, `resourceIdMatches`
-*  `index`, `instance`  
+选择器支持以下参数：
+
+*  ``text``, ``textContains``, ``textMatches``, ``textStartsWith``
+*  ``className``, ``classNameMatches``
+*  ``description``, ``descriptionContains``, ``descriptionMatches``, ``descriptionStartsWith``
+*  ``checkable``, ``checked``, ``clickable``, ``longClickable``
+*  ``scrollable``, ``enabled``, ``focusable``, ``focused``, ``selected``
+*  ``packageName``, ``packageNameMatches``
+*  ``resourceId``, ``resourceIdMatches``
+*  ``index``, ``instance``  
 
 
-Examples
+样例
 ---------------------------
-
-Here are some examples.
 
 .. code-block:: python
 
-   # Select the widget that has text "More Options" and click it.
+   # 选择text值为 "More Options" 的控件并点击它。
    d(text='More Options').click()
 
-   # Use multiple fields in one selector.
-   # Select the widget that has text "Clock" and className "android.widget.TextView" and click it.
+   # 在一个选择器中使用多个参数。
+   # 选择具有text值为 "Clock" 和类名为 "android.widget.TextView" 的控件并点击它。
    d(text='Clock', className='android.widget.TextView').long_click()
 
-   # Select the widget that has resourceId "com.example/input_box" and set its text to "Hello world"
+   # 选择具有资源编号为 "com.example/input_box" 的控件，并将其文本值设置为 "Hello world"。
    d(resourceId="com.example/input_box").set_text("Hello world")
