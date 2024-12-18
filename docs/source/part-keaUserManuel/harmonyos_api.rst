@@ -1,10 +1,10 @@
-Write property for HarmonyOS
+为 HarmonyOS 编写属性
 =================================
 
-tutorial for uiviewer (UI inspector for HarmonyOS)
+HarmonyOS 的 UI 控件查看工具：uiviewer教程
 -------------------------------------------------------
 
-We use uiviewer for HarmonyOS. The following command will install and launch uiviewer for you.
+我们使用 uiviewer 来支持 HarmonyOS。以下命令将为您安装并启动 uiviewer。
 
 .. code-block:: bash
 
@@ -12,63 +12,68 @@ We use uiviewer for HarmonyOS. The following command will install and launch uiv
 
     python -m uiviewer
 
-This will start a host server on http://localhost:8000/ by default. You can access this site with a
-web browser.
+这将启动一个主机服务器，默认情况下地址为 http://localhost:8000/。您可以通过浏览器访问该工具。
 
 
 HarmonyOS PDL API 
 ---------------------------------------------------
-We use hmdriver2 for PDL api, which is similar to uiautomator2.
+我们使用 hmdriver2 作为 PDL API，与 uiautomator2 相似。
 
-The unique selector in HarmonyOS is **key** or **id** (will be deprecated soon). You can also use **text** and
-**description** to target a device.
+在 HarmonyOS 中，应用开发者指定的全局唯一的选择器是 **id** (类似安卓中的resourceId)。当没有id时，您可以使用 **text** 和 **description** 等属性来定位设备。
+您可以在选择器中填写多个控件属性来确保尽可能准确地定位至目标控件。
 
-You can see the usage of hmdriver2 `here <https://github.com/codematrixer/hmdriver2>`_
+您可以在 `github-hmdriver2 <https://github.com/codematrixer/hmdriver2>`_ 中查看 hmdriver2 的使用手册。
 
-Here's some examples for HarmonyOS PDL.
+以下是一些 HarmonyOS PDL 的示例。
 
 .. code-block:: python
 
-    # click a widget that has id "wifi_entry.icon"
+    # 点击 id 为 "wifi_entry.icon" 的控件
     d(id="wifi_entry.icon").click()
 
-    # click a widget that has key "display_settings.title" and text "Display"
-    d(key="display_settings.title", text="Display").long_click()
+    # 点击 id 为 "display_settings.title" 且text为 "Display" 的控件
+    d(id="display_settings.title", text="Display").long_click()
 
-    # Enter "hello" to the widget that has id "url_input_in_search"
+    # 向 id 为 "url_input_in_search" 的控件输入 "hello"
     d(id="url_input_in_search").input_text("hello")
 
-Launch Kea for HarmonyOS
+为 HarmonyOS 启动 Kea
 ----------------------------------------------
 
-You should specify the system of your PC in ``config.yml``. You can see the tutorial for :ref:`yml_confg`.
+您应该在 ``config.yml`` 中指定您电脑的系统。您可以查看 :ref:`yml_config` 的教程。
 
-Here's an example. 
+以下是一个示例。
 
 .. code-block:: yaml
 
     # config.yml
 
-    # Claim the system of the PC is Linux
+    # 声明电脑的系统为 Linux
     env: Linux 
 
-you can specify other args in terminal or in config.yml. Checkout the provided
-``config.yml`` for details.
+您可以在终端或 config.yml 中指定其他参数。有关详细信息，请查看提供的
+``config.yml``。
 
-If you specified all the nessary args in config.yml, you can start kea via ``kea -load_config``.
-The following example is a fully-configured and can be launched by ``kea -load_config``.
+如果您在 config.yml 中指定了所有必要的参数，可以通过 ``kea -load_config`` 启动 kea。
+以下示例是一个完全配置的示例，可以通过 ``kea -load_config`` 启动。
 
 .. code-block:: yaml
 
-    # env: the system of your PC (e.g. windows, macOS, Linux)
+    # env: 您电脑的系统 (例如 windows, macOS, Linux)
     env: Linux
 
-    # system: the target harmonyOS
+    # system: 目标 HarmonyOS
     system: harmonyOS
 
-    device: 127.0.0.1:5555
-    app_path: example/example.hap
-    policy: random
+    device: 127.0.0.1:5555          # 仅连接一个设备时可不填，就自动指定
+    app_path: example/example.hap   # 应用安装包
+    policy: random                  # 输入策略
     count: 100
     properties: 
         - example/example_hm_property.py
+    
+    # package 用于通过包名指定待测应用。此选项和通过app_path指定安装包请二选一。
+    # 当您使用包名指定待测应用时，您一般需要让keep_app为True，这让测试停止时应用不会被卸载。
+    package: com.youku.next
+    keep_app: True
+

@@ -30,6 +30,7 @@ Contents
 
    part-keaUserManuel/envirnment_setup.rst
    part-keaUserManuel/first_property
+   part-keaUserManuel/harmonyos_api
    part-keaUserManuel/api
    part-keaUserManuel/tutorial
    part-keaUserManuel/options

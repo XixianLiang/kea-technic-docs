@@ -12,7 +12,7 @@ Kea 提供了以下选项。使用 ``kea -h`` 查看详细信息。
 
 ``-a --apk``：被测试应用的 apk 文件。
 
-``-d --device_serial``：用于测试的设备的序列号。（使用 'adb devices' 或 'hdc list targets' 查找你的目标设备）
+``-d --device_serial``：用于测试的设备的序列号。（当只连接了一个设备时，此参数可缺省，kea将自动指定目标设备。你可以使用 'adb devices' 或 'hdc list targets' 查找你的目标设备）
 
 ``-o --output``：执行结果的输出目录。（默认："output"）
 
@@ -57,7 +57,7 @@ Kea 提供了以下选项。使用 ``kea -h`` 查看详细信息。
 
 ``-utg``：生成UTG图。
 
-.. _yml_confg:
+.. _yml_config:
 
 YAML 配置
 --------------
