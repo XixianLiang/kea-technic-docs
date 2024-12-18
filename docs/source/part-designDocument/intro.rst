@@ -3,6 +3,7 @@
 
 
 目录结构
+------------------
 
 .. code-block:: 
 
@@ -51,7 +52,10 @@
     └── 📁 setup.py
 
 
+各功能部分设计文档
+--------------------------
 
 .. toctree:: 
     
     user-interface/keaTest-suite/decorators.rst
+    kea/keaTestElements.rst
