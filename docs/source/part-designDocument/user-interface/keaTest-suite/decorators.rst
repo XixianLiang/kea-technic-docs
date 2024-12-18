@@ -110,7 +110,8 @@ PRECONDITIONS_MARKER为一个常量。
 主路径指定了一系列事件，从应用起始页执行这些事件会将应用引到至性质的起始状态（满足前置条件的页面）。
 下述的@mainPath装饰器将用户定义的一条性质封装在数据结构MainPath中，并对这个性质的函数进行使用MAINPATH_MARKER进行标记。
 
-以下是MainPath数据结构的定义。function用于存放用户定义的mainPath函数对象，path为对这个函数进行源代码处理后获取的详细路径步骤，为一个以列表的形式存储的各个步骤的源代码。
+以下是MainPath数据结构的定义。function用于存放用户定义的mainPath函数对象，path为对这个函数进行源代码处理后获取的详细路径步骤，
+为一个存储了主路径中各个步骤的源代码的列表。
 
 .. code-block:: python
 
