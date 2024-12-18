@@ -105,10 +105,10 @@ InputManager类中的成员方法
       - ``device``: Device实例。
       - ``app``: App实例。
 
-   :返回:
+    :返回:
       - 本次测试使用的策略实例。
 
-   :核心流程:
+    :核心流程:
       1. 根据策略名称判断使用哪种输入策略。
       2. 创建对应的输入策略实例。
    
@@ -189,14 +189,7 @@ InputManager类中的成员方法
                     break
             event_log.stop()
 
-.. 
- 异常类
- --------
- UnknownInputException
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- ``UnknownInputException``是InputManager类中定义的异常类，用于处理未知输入的情况。
-
- 使用方法
+使用方法
 --------
 
 InputManager类的主要作用是控制事件生成器并管理应用运行期间的事件发送。
