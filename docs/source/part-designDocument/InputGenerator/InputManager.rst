@@ -1,7 +1,10 @@
 InputManager
 ================
 
-InputManager类是事件生成器的控制类，负责启动、停止事件的生成，并在测试期间向应用程序运行发送生成的所有事件。InputManager所包含的主要方法有：
+InputManager类是事件生成器的控制类，负责启动、停止事件的生成，
+并负责根据指定的输入策略生成和发送事件，支持随机探索策略、主路径引导策略和LLM策略。
+该类提供了灵活的事件管理机制，允许用户自定义事件生成策略，并能够根据应用的运行状态动态调整事件发送。
+InputManager所包含的主要方法有：
 
 - 获取当前测试用户所选择的探索策略。
 - 添加事件到设备的执行事件列表等待执行。
@@ -16,6 +19,17 @@ InputManager类是事件生成器的控制类，负责启动、停止事件的�
 .. note::
         
     为了便于读者理解，本文中提供的代码段简化版本仅对核心流程进行抽象并展示，实际代码与简化的参考代码不完全一致。
+
+类属性
+--------
+
+- ``DEFAULT_POLICY``: 默认的输入策略名称。
+- ``RANDOM_POLICY``: 随机输入策略名称。
+- ``DEFAULT_EVENT_INTERVAL``: 默认事件间隔时间。
+- ``DEFAULT_EVENT_COUNT``: 默认生成事件的数量。
+- ``DEFAULT_TIMEOUT``: 默认超时时间。
+- ``DEFAULT_DEVICE_SERIAL``: 默认设备序列号。
+- ``DEFAULT_UI_TARPIT_NUM``: 默认UI陷阱数量。
 
 InputManager类中的数据结构
 ---------------------------
@@ -56,13 +70,48 @@ InputManager类中的数据结构
 InputManager类中的成员方法
 ---------------------------
 
+构造函数
+~~~~~~~~~~~~~~~
+
+``__init__`` 方法用于初始化InputManager实例，设置事件发送的基本参数，并根据提供的策略名称初始化对应的输入策略。
+
+:参数:
+   - ``device``: Device实例，表示目标设备。
+   - ``app``: App实例，表示目标应用。
+   - ``policy_name``: 字符串，指定生成事件的策略名称。
+   - ``random_input``: 布尔值，指示是否使用随机输入。
+   - ``event_interval``: 事件间隔时间。
+   - ``event_count``: 事件生成数量，默认为``DEFAULT_EVENT_COUNT``。
+   - ``profiling_method``: 分析方法，用于性能分析。
+   - ``kea``: Kea实例，用于性质测试。
+   - ``number_of_events_that_restart_app``: 重启应用的事件数量。
+   - ``generate_utg``: 布尔值，指示是否生成UTG。
+
+:核心流程:
+   1. 初始化日志记录器。
+   2. 设置事件发送参数。
+   3. 根据策略名称初始化输入策略。
+   4. 设置相似度计算器。
+
 获取探索策略的方法
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 1. **get_input_policy**
 
-    get_input_policy 方法根据用户所选择的policy_name来实例化对应的探索策略对象。实例化的对象存储在policy成员变量里。
+    get_input_policy 方法根据用户所选择的policy_name来实例化对应的探索策略对象。
+    实例化的对象存储在policy成员变量里。支持的策略包括：随机探索策略、主路径引导策略和LLM策略。
 
+    :参数:
+      - ``device``: Device实例。
+      - ``app``: App实例。
+
+    :返回:
+      - 本次测试使用的策略实例。
+
+    :核心流程:
+      1. 根据策略名称判断使用哪种输入策略。
+      2. 创建对应的输入策略实例。
+   
     .. code-block:: python
 
         def get_input_policy(self, device, app):
@@ -85,6 +134,11 @@ InputManager类中的成员方法
    
    start 方法用于启动所选定的探索策略。
 
+   :核心流程:
+      1. 记录开始发送事件的日志。
+      2. 根据输入策略开始发送事件。
+      3. 处理键盘中断，确保优雅退出。
+
    .. code-block:: python
 
         def start(self):
@@ -99,6 +153,11 @@ InputManager类中的成员方法
    
    stop 方法用于结束探索过程。
 
+   :核心流程:
+      1. 终止事件发送。
+      2. 清理事件发送相关的资源。
+      3. 记录停止发送事件的日志。
+
    .. code-block:: python
 
         def stop(self):
@@ -107,6 +166,14 @@ InputManager类中的成员方法
 3. **add_event**
    
    add_event添加一个事件到事件列表，并将该事件发送给移动设备。
+   
+   :参数:
+      - ``event``: 要添加的事件，应为AppEvent的子类。
+
+   :核心流程:
+      1. 将事件添加到事件列表。
+      2. 创建事件日志记录器。
+      3. 根据事件间隔时间发送事件到设备。
 
    .. code-block:: python
 
@@ -121,3 +188,10 @@ InputManager类中的成员方法
                 if not self.device.pause_sending_event:
                     break
             event_log.stop()
+
+使用方法
+--------
+
+InputManager类的主要作用是控制事件生成器并管理应用运行期间的事件发送。
+用户可以通过构造函数初始化InputManager实例，并设置相应的参数，如测试设备、被测应用、策略名称等。
+然后，可以通过start方法启动事件生成器。通过add_event方法添加单个事件，并发送。通过stop方法停止生成事件。
