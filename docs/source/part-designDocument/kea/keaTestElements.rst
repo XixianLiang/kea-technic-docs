@@ -1,28 +1,35 @@
-keaTestElements
+KeaTestElements
 =========================
 
-keaTestElements与用户继承并自定义的keaTest一一对应。在kea运行时，keaTestElements会读取每个用户自定义的keaTest，
-并重新组织为方便kea进行读取的数据结构。具体转换过程可参考：:ref:`decorators-keatestelements`。
+KeaTestElements是Kea运行时存储用户自定义性质的数据结构，与用户继承并自定义的keaTest一一对应。
+在kea启动时，keaTestElements会读取每个用户自定义的keaTest，并重新组织为方便kea进行读取的数据结构。
+具体的转换过程可参考装饰器一章：:ref:`decorators-keatestelements`。
 
 
-keaTestElements的数据结构和成员方法定义如下：
-
-.. code-block:: python
-
-    class KeaTestElements:
-        self.keaTest_name: str
-        self.rules: List[Rule]
-        self.initializers: List[Initializer]
-        self.mainPaths: List[MainPath]
-
-        def load_rules(keaTest)
-        def load_initializers(keaTest)
-        def load_mainPaths(keaTest)
+KeaTestElements的数据结构图示如下：
 
 其中，keaTest_name是一个字符串，用于存储用户定义的keaTest的类名。Rules是一个列表，用于存储Rule对象。
 Initializers是一个列表，用于存储初始化函数对象Initializer。MainPaths是一个列表，用于存储主要路径对象MainPath。
 
-其中，Rule、MainPath和Initializer对象的定义可参见“装饰器”一章。
+其中，Rule、MainPath和Initializer对象的数据结构及定义可参见“装饰器”一章。
+
+
+.. figure:: ../../../images/class_keaTestElements.png
+    :align: center
+
+    KeaTestElements 数据结构
+
+
+KeaTestElements的成员方法定义伪代码如下：
+
+.. code-block:: python
+
+    class KeaTestElements:
+        def load_rules(keaTest)
+        def load_initializers(keaTest)
+        def load_mainPaths(keaTest)
+
+
 
 load_rules接收一个用户自定义的keaTest对象，读取其中的rule并将一个keaTest中的所有rule存储入rules列表。
 load_initializers接收一个用户自定义的keaTest对象，读取其中的初始化函数对象Initializer并将其存储入initializers列表。
