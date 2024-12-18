@@ -197,7 +197,7 @@ Kea 给用户提供 ``@initializer()`` 帮助用户定义初始化函数，让�
 ---------------------------------------------
 接下来是一个完整的示例，展示了如何从应用 `Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_ 的功能中提取性质。
 
-`Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_ 是一个文件管理应用程序。
+`Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_ 是一个文件管理应用程序。它提供了简洁直观的用户界面，允许用户轻松浏览、管理和操作文件。
 
 在 Amaze 中，你可以创建一个文件夹，并且在创建后新文件夹应该存在。因此，你可以定义一个性质 ``create_folder_should_exist``。
 这意味着当你想要创建一个文件夹时，它应该能够被成功创建。
