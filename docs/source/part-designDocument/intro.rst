@@ -58,5 +58,7 @@
 .. toctree:: 
     user-interface/cli.rst
     user-interface/keaTest-suite/kea-test.rst
+    user-interface/keaTest-suite/decorators.rst
+    user-interface/keaTest-suite/pdl_driver.rst
     kea/keaTestElements.rst
     kea/kea.rst
