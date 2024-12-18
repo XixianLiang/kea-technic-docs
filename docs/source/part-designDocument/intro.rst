@@ -63,3 +63,5 @@
     kea/keaTestElements.rst
     kea/kea.rst
     Input Manager/Input Manager.rst
+    InputGenerator/InputManager
+    Input Manager/Input Manager.rst
