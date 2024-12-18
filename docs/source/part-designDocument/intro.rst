@@ -62,5 +62,4 @@
     user-interface/keaTest-suite/pdl_driver.rst
     kea/keaTestElements.rst
     kea/kea.rst
-    Input Manager/Input Manager.rst
     InputGenerator/InputManager
