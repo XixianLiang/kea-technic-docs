@@ -1,47 +1,46 @@
-How to write properties
+性质定义教程
 ================================
 
-In this tutorial, you will learn how to write properties and test them with Kea.
+在本教程中，你将学习如何使用 Kea 编写应用性质并进行测试。
 
-In mobile apps, a property defines the expected behavior of the app. 
-Then, if the app violates the property, it means a bug is found.
+在移动应用中，性质定义了应用的预期行为。如果应用违反了该性质，则意味着发现了一个错误。
 
-At high level, a property consists of three key components **<P, I, Q>**, where (1) *P* is a precondition, 
-(2) *I* is an interaction scenario which defines how to perform the app functionality, 
-and (3) *Q* is a postcondition which defines the expected behavior.
+用户所定义的应用功能性质由三个关键组件组成。 **<P, I, Q>**, (1) *P* 是一个前置条件, 
+(2) *I* 是一个交互场景，定义了如何执行应用功能, 
+(3) *Q* 是一个后置条件，定义了预期的行为。
 
-Kea uses ``@initializer()`` to pass the welcome page or the login page of the app.
+Kea 给用户提供 ``@initializer()`` 帮助用户定义初始化函数，让应用能够跳过欢迎页面或登录页面。
 
-In Kea, a property is defined by applying the ``@rule()`` decorator on a function.
+在 Kea 中，性质是通过应用 ``@rule()`` 这样一个性质函数上的装饰器来定义的。
 
-To define the precondition of the property, you can use the ``@precondition()`` decorator on the  ``@rule()``-decorated function.
+要定义性质的前置条件，用户可以在 ``@rule()`` 装饰的函数上，使用装饰器 ``@precondition()``。
 
-The postcondition is defined by the ``assert`` statement in the ``@rule()``-decorated function.
+后置条件则在 ``@rule()`` 装饰的函数内部使用 ``assert`` 来完成定义。
 
-For mobile apps, you may can get properties from multiple sources, such as the app's specification, the app's documentation, the app's test cases, the app's bug reports, etc.
+对于移动应用，用户可以从多个途径获取应用性质，例如应用的规范、应用的文档、应用的测试用例、应用的错误报告等。
 
-Let's start with a simple example on how to get a property, write the property in Kea, and test the property by Kea.
+让我们从几个简单的例子开始，介绍如何获取一个性质，如何在 Kea 中编写该性质，以及如何通过 Kea 测试该性质。
 
-Specify property from historical bugs
+从应用错误报告中获取应用性质
 ---------------------------------------------
 
-This example will show how to get a property from the app `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_
+以下这个例子将展示如何从应用 `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ 中获取一个性质。
 
-`OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ is an app for taking and managing notes.
+`OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ 是一个用于记录和管理笔记的应用。
 
-Here is a bug report from the app `#634 <https://github.com/federicoiosue/Omni-Notes/issues/634>`_, where a user complained that when he removed a tag, it removed other tags that sharing the same prefix.
+本样例来自该应用的错误报告 `#634 <https://github.com/federicoiosue/Omni-Notes/issues/634>`_, 用户表示，当他删除一个标签时，其他共享相同前缀的标签也被删除。
 
-Then, from this bug report, you can get a property:
+然后，从这个错误报告中，可以得到一下应用性质：
 
-After removing the tag, the tag should be successfully removed and the note content should remain unchanged.
+在删除标签后，标签应该成功移除，笔记内容应保持不变。
 
-From the bug report, you can get a property as follows:
+根据错误报告，你可以得到一个这样的应用性质：
 
-- **P (Precondition)**: The tag exists.
-- **I (Interaction scenario)**: Remove the note tag from the tag list.
-- **Q (Postcondition)**: The tag is removed and the note content remains unchanged.
+- **P (前置条件)**: 应该有标签存在。
+- **I (交互场景)**: 从标签列表中移除某个标签。
+- **Q (后置条件)**: 指定的标签被删除，并且其余文本内容保持不变。
 
-Let's write the property in Kea.
+接下来，让我们在Kea中使用性质描述语言定义该性质。
 
 
 .. code-block:: Python
@@ -68,22 +67,22 @@ Let's write the property in Kea.
         # the tag should be removed in the content and the updated content should be the same as the expected content
         assert not d(textContains=select_tag_name).exists() and new_content == origin_content_exlude_tag
 
-The ``@precondition`` decorator defines when the property should be tested.
-Here, ``d(resourceId="it.feio.android.omninotes:id/menu_tag").exists()`` checks if the tag button exists and 
-``"#" in d(resourceId="it.feio.android.omninotes:id/detail_content").info["text"]`` checks if the note content contains a tag. 
+``@precondition`` 装饰器定义了该性质应当开始被测试的状态节点。
+代码中， ``d(resourceId="it.feio.android.omninotes:id/menu_tag").exists()`` 检查了是否标签按钮存在于界面内，
+``"#" in d(resourceId="it.feio.android.omninotes:id/detail_content").info["text"]`` 检查了是否笔记内容中存在“#”字符。
 
 
-The ``@rule()`` decorator defines the property.
-Here, the interaction scenario is to remove a tag.
+``@rule()`` 装饰器定义了应用性质函数。
+在本段代码中，交互场景为执行移除标签的操作。
 
-The postcondition is defined by the ``assert`` statement.
-Here, Kea checks if the tag is removed and content remains unchanged.
+后置条件则由 ``assert`` 语句来完成定义。
+这里，Kea检查是否指定的标签被删除并且保持其余文本不变。
 
-That's it! This is a property that should be held by `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_.
+像这样一条性质就是应该由 `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ 应用所遵循的。
 
-Also, you can add a function to set up the app's initial state before testing the property.
+此外，用户还可以定义一个初始化函数，在测试性质之前设置应用的初始状态。
 
-To do this, you can use ``@initializer()`` to specify a function and write the corresponding UI events to pass the welcome page:
+为了实现该功能，用户可以使用一个 ``@initializer()`` 装饰器来定义一个初始化函数并且写一些UI操作指令，来引导应用完成初始化操作:
 
 .. code:: Python
 
@@ -95,52 +94,47 @@ To do this, you can use ``@initializer()`` to specify a function and write the c
         if d(text="OK").exists():
             d(text="OK").click()
 
-Here, the code can automatically pass the welcome page in `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_.
-Note that you can use the ``@initializer()`` decorator to define the setup function.
-Then, Kea will execute the setup function before testing the property.
+在这里，上述代码可以自动通过UI操作来跳过 `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ 的欢迎页面。
+你可以使用 ``@initializer()`` 装饰器来定义任意应用的初始化函数。这样，Kea 会在测试应用性质之前执行该初始化函数。
+这样可以确保在每次测试开始时，应用都处于预期的初始状态。
 
-.. note::
+.. tip:: 
 
-    This feature can be used to set up the app's initial state before testing the property. 
-    For example, use this feature to pass the login, add data to the app, etc.
-    If you don't need to set up the app's initial state, you can skip it.
+    这个功能可以用来在测试应用性质之前设置应用程序的初始状态。
+    例如，可以使用此功能进行登录、向应用程序添加数据等。
+    如果不需要设置应用程序的初始状态，可以跳过此步骤。
 
-Moreover, if you want to use the main path guided exploration strategy, you should set a main path function.
+此外，如果用户想使用主路径引导探索策略，需要使用 ``@mainPath()`` 装饰器定义一个函数来设置一个主路径函数。
 
-To do this, you can use the following code:
+为了给该应用完成该步骤，可以使用以下代码来定义主路径。
 
 .. code:: Python
 
     @mainPath()
     def test_main(self):
-        d(resourceId="it.feio.android.omninotes:id/fab_expand_menu_button").long_click()
-        d(resourceId="it.feio.android.omninotes:id/detail_content").click()
-        d(resourceId="it.feio.android.omninotes:id/detail_content").set_text("read a book #Tag1")
+        d(resourceId="it.feio.android.omninotes.alpha:id/fab_expand_menu_button").long_click()
+        d(resourceId="it.feio.android.omninotes.alpha:id/detail_content").click()
+        d(resourceId="it.feio.android.omninotes.alpha:id/detail_content").set_text("read a book #Tag1")
         d(description="drawer open").click()
-        d(resourceId="it.feio.android.omninotes:id/note_content").click()
-        d(resourceId="it.feio.android.omninotes:id/menu_tag").click()
-        d(resourceId="it.feio.android.omninotes:id/md_control").click()
-        d(resourceId="it.feio.android.omninotes:id/md_buttonDefaultPositive").click()
+        d(resourceId="it.feio.android.omninotes.alpha:id/note_content").click()
 
-The code above can guide Kea to create a note with the content of "read a book #Tag1" in the omninotes.
-And then removes the tag “Tag1” of this note.
+上述代码可以引导 Kea 在 Omninotes 中创建一条内容为“read a book #Tag1”的笔记。
 
-.. note::
+.. tip::
 
-    In the part of the definition of the main path, you can only use UI operation commands to complete the definition;
-    The function cannot contain other Python statements such as for loops.
-    But we believe this approach is sufficient to implement the functionality of the main path.
+    在主路径定义部分，只能使用 UI 操作命令来完成定义；
+    该函数目前不支持其他 Python 语句，例如 for 循环。
+    但我们认为这种方法足以实现主路径的功能。
 
-Here, you have already learned how to write a property in Kea.
+太棒了！到此，你已经学会了如何使用性质描述语言从错误报告中提取并定义一个应用性质。
 
-To test this property, you need to put the property in a class, which inherits from the ``Kea`` class.
+要测试这个性质，用户需要将其放入定义的一个类中，该类继承自 ``KeaTest`` 类。
 
 .. code:: Python
     
     from kea.main import *
 
-    class Test(Kea):
-        
+    class Test(KeaTest):
 
         @initialize()
         def set_up(self):
@@ -152,14 +146,11 @@ To test this property, you need to put the property in a class, which inherits f
 
         @mainPath()
         def test_main(self):
-            d(resourceId="it.feio.android.omninotes:id/fab_expand_menu_button").long_click()
-            d(resourceId="it.feio.android.omninotes:id/detail_content").click()
-            d(resourceId="it.feio.android.omninotes:id/detail_content").set_text("read a book #Tag1")
+            d(resourceId="it.feio.android.omninotes.alpha:id/fab_expand_menu_button").long_click()
+            d(resourceId="it.feio.android.omninotes.alpha:id/detail_content").click()
+            d(resourceId="it.feio.android.omninotes.alpha:id/detail_content").set_text("read a book #Tag1")
             d(description="drawer open").click()
-            d(resourceId="it.feio.android.omninotes:id/note_content").click()
-            d(resourceId="it.feio.android.omninotes:id/menu_tag").click()
-            d(resourceId="it.feio.android.omninotes:id/md_control").click()
-            d(resourceId="it.feio.android.omninotes:id/md_buttonDefaultPositive").click()
+            d(resourceId="it.feio.android.omninotes.alpha:id/note_content").click()
 
         @precondition(lambda self: d(resourceId="it.feio.android.omninotes:id/menu_tag").exists() and
                     "#" in d(resourceId="it.feio.android.omninotes:id/detail_content").info["text"]
@@ -183,112 +174,61 @@ To test this property, you need to put the property in a class, which inherits f
             # the tag should be removed in the content and the updated content should be the same as the expected content
             assert not d(textContains=select_tag_name).exists() and new_content == origin_content_exlude_tag
 
-Here, you need to write the property in the ``Test`` class, which inherits from the ``Kea`` class.
+在这里，需要在继承自 ``KeaTest`` 类的 ``Test`` 类中编写定义该性质。
 
-We put this file example_mainpath_property.py in the ``example`` directory.
-You can test the property by running the following command:
+我们将这个性质脚本文件 ``example_mainpath_property.py`` 放在 ``example`` 目录中。
+用户可以通过运行以下命令来测试应用的该性质。
 
 .. code:: console
 
     kea -f example/example_mainpath_property.py -a example/omninotes.apk
 
-When you try to test this property, you may quickly find two new bugs that violates this property.
-Then, you can write the corresponding bug reports and submit them to the app's developers.
-Both of them are fixed by app developers.
+当你尝试测试这个性质时，你可能会迅速发现两个新的错误，这些错误违反了该性质。
+然后，你可以撰写相应的错误报告并提交给应用程序的开发人员。这两个错误目前都已被开发人员修复。
 
-You can see the bug reports:
+你可以查看这两个错误的报告：
 
 1. `Bug Report: Note tag cannot be removed <https://github.com/federicoiosue/Omni-Notes/issues/942>`_.
 
 
 2. `Bug Report: Deleting One Tag in a Note Affects Another Tag in the Same Note <https://github.com/federicoiosue/Omni-Notes/issues/949>`_.
 
-Specify property from app function
+从指定应用程序功能中提取性质
 ---------------------------------------------
-This example will show how to get a property from the app `OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_
+接下来是一个完整的示例，展示了如何从应用 `Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_ 的功能中提取性质。
 
-`OmniNotes <https://github.com/federicoiosue/Omni-Notes/>`_ is an app for taking and managing notes.
+`Amaze <https://github.com/TeamAmaze/AmazeFileManager>`_ 是一个文件管理应用程序。
 
-In the settings of Omninotes, there is a function that can set or remove a lock for a note. So you may can define a property
-``remove_password_in_setting_should_effect``. Just means when you remove a lock in the settings, the note must unlocked.
+在 Amaze 中，你可以创建一个文件夹，并且在创建后新文件夹应该存在。因此，你可以定义一个性质 ``create_folder_should_exist``。
+这意味着当你想要创建一个文件夹时，它应该能够被成功创建。
 
-To do this, first you should use ``@initializer()`` to specify a function and write the corresponding UI events to pass the welcome page:
 
-.. code:: Python
-
-    @initializer()
-    def set_up(self):
-        d.set_fastinput_ime(True)
-        d(resourceId="it.feio.android.omninotes:id/next").click()
-        d(resourceId="it.feio.android.omninotes:id/next").click()
-        d(resourceId="it.feio.android.omninotes:id/next").click()
-        d(resourceId="it.feio.android.omninotes:id/next").click()
-        d(resourceId="it.feio.android.omninotes:id/next").click()
-        d(resourceId="it.feio.android.omninotes:id/done").click()
-        if d(text="OK").exists():
-            d(text="OK").click()
-
-Then you can define a function as the main path guide the app to lock a note and jump to the remove lock interface, just like this:
+你任然需要使用 ``@rule()`` 和 ``@precondition()`` 来完成应用性质的定义。
+在这个样例中，前置条件 *P* 是创建新文件夹的按钮需要存在，并处于能够创建文件夹的界面上。
+交互场景 *I* 是一些创建文件夹的操作事件序列。
+最后，后置条件 *Q* 是检查新创建的文件夹是否存在。
 
 .. code:: Python
 
-    @mainPath()
-    def remove_password_in_setting_should_effect_mainpath(self):
-        d(resourceId="it.feio.android.omninotes:id/fab_expand_menu_button").long_click()
-        d(resourceId="it.feio.android.omninotes:id/detail_content").set_text("Hello world")
-        d(description="More options").click()
-        d(text="Lock").click()
-        d(resourceId="it.feio.android.omninotes:id/password").set_text("1")
-        d(resourceId="it.feio.android.omninotes:id/password_check").set_text("1")
-        d(resourceId="it.feio.android.omninotes:id/question").set_text("1")
-        d(resourceId="it.feio.android.omninotes:id/answer").set_text("1")
-        d(resourceId="it.feio.android.omninotes:id/answer_check").set_text("1")
-        d(scrollable=True).scroll.to(text="OK")
-        d(text="OK").click()
-        d.press("back")
-        d(description="drawer open").click()
-        d(resourceId="it.feio.android.omninotes:id/settings").click()
-        d(resourceId="android:id/title", text="Data").click()
-        d(resourceId="android:id/title", text="Password").click()
-        d(resourceId="it.feio.android.omninotes:id/password_remove").click()
-
-The most important thing is define the property, you should use ``@rule()`` and ``@precondition()`` to finish it. Here, the precondition
-*P* is use two UI components to check whether the app is in the remove lock interface. And then execute some events to remove the lock.
-Finally, check whether the locked note becomes unlocked.
-
-.. code:: Python
-
-    @precondition(lambda self: d(text="Insert password").exists() and d(text="PASSWORD FORGOTTEN").exists())
+    @precondition(lambda self: d(resourceId="com.amaze.filemanager:id/sd_main_fab").exists() and
+                               not d(textContains = "SDCARD").exists())
     @rule()
-    def remove_password_in_setting_should_effect(self):
-        d(resourceId="it.feio.android.omninotes:id/customViewFrame").click()
-        d.send_keys("1", clear=True)
-        d(resourceId="it.feio.android.omninotes:id/buttonDefaultPositive").click()
-        if d(text="Insert password").exists():
-            print("wrong password")
-            return
-        d(resourceId="it.feio.android.omninotes:id/buttonDefaultPositive").click()
-        d.press("back")
-        d.press("back")
-        d.press("back")
-        d.press("back")
-        assert not d(resourceId="it.feio.android.omninotes:id/lockedIcon").exists()
+    def create_folder_should_exist(self):
+        d(resourceId="com.amaze.filemanager:id/sd_main_fab").click()
+        d(resourceId="com.amaze.filemanager:id/sd_label", text="Folder").click()
+        file_name = self._files.get_random_value()
+        d.send_keys(file_name, clear=True)
+        d(resourceId="com.amaze.filemanager:id/md_buttonDefaultPositive").click()
+        d(scrollable=True).scroll.to(resourceId="com.amaze.filemanager:id/firstline", text=file_name)
+        assert d(text=file_name).exists()
 
-We put this file advanced_example_property.py in the ``example`` directory.
-You can test the property by running the following command:
-
-.. code:: console
-
-    kea -f example/advanced_example_property.py -a example/omninotes-5.5.3.apk
-
-
-That's it! You have learned how to write a property and test it with Kea.
+太好了！你已经学会了如何从应用程序功能中编写应用性质。
 
 .. note::
 
-    You can write a property or some properties in one ``.py`` file as one TestCase, of course, you can also write multiple properties in multiple ``.py`` files.
-    But if you choose the first method you should make sure there is at most one ``@initializer()`` and at most one ``@mainPath()`` in a ``.py`` file, but
-    you can have multiple ``@rule()`` and ``@precondition()``. The structure of TestCase is in the image below.
+    用户可以在一个 ``.py`` 文件中编写一个应用程序的单个性质或多个性质。也可以将多个性质写在多个 .py 文件中。
+    如果选择第一种方法，用户需要确保在一个 .py 文件中最多只有一个 ``@initializer()`` 和一个 ``@mainPath()``，
+    同时有多个 ``@rule()`` 和 ``@precondition()`` 来对应不同的性质。测试用例的结构如下图所示（请根据需要添加图像或示例代码）。
 
 .. image:: ../../images/TestCase.png
             :align: center
