@@ -6,14 +6,32 @@
 设置属性，我们根据不同的装饰器，设置不同的MARKER属性标记。在Kea加载性质的时候，我们读取如下的数据结构，
 并将如下的数据结构通过KeaTestElements类进行读取，并转换为方便Kea读取和处理的数据结构：KeaTestElements。
 
+.. _decorators-keaTestElements:
+
 .. figure:: ../../../../images/decorators-keaTestElements.png
     :align: center
 
     从用户自定义KeaTest到运行时KeaTestElements的转换
 
+性质的定义
+---------------------------------
 
+下述的@rule和@precondition装饰器将用户定义的一条性质封装在数据结构Rule中，并对这个性质的函数进行使用RULE_MARKER进行标记。
 
-@rule装饰器用于定义一条性质。
+以下是Rule数据数据结构的定义。precondition用于存放一个函数对象，存储一个计算前置条件的函数。function用于存储这条性质的交互场景(interaction scenario)。
+
+.. code-block:: python
+
+    @attr.s(frozen=True)
+    class Rule:    
+        # `preconditions` denotes the preconditions annotated with `@precondition`
+        preconditions:Callable = attr.ib()  
+
+        # `function` denotes the function of @Rule. 
+        # This function includes the interaction scenario and the assertions (i.e., the postconditions)
+        function:Callable = attr.ib()
+
+@rule装饰器用于定义一条性质。其中，RULE_MARKER为一个常量。
 
 .. code-block:: python
 
@@ -30,7 +48,8 @@
 
         return accept
 
-@precondition前提条件指定了属性何时可以被执行。一个属性可以有多个前提条件，每个前提条件由 `@precondition` 指定。
+@precondition前提条件指定了属性何时可以被执行。一个属性可以有多个前提条件，每个前提条件由 `@precondition` 指定。其中，
+PRECONDITIONS_MARKER为一个常量。
 
 .. code-block:: python
 
@@ -53,9 +72,24 @@
 
         return accept
 
-@initializer定义一个初始化函数，用于应用的初始化，如跳过新手教程等。
+初始化函数的定义
+------------------
 
-.. code-block:: 
+@initializer定义一个初始化函数，用于应用的初始化，如跳过新手教程等。
+下述的@initializer装饰器将用户定义的一条性质封装在数据结构Initializer中，并对这个性质的函数进行使用INITIALIZER_MARKER进行标记。
+
+以下是Initializer数据结构的定义。function用于存放一个函数对象，为初始化时要执行的一系列操作。
+
+.. code-block:: python
+
+    @attr.s()
+    class Initializer: 
+        # `function` denotes the function of `@initializer.
+        function:Callable = attr.ib()
+
+@initializer装饰器用于定义一个初始化函数，其中，INITIALIZER_MARKER是一个常量。
+
+.. code-block:: python
 
     def initializer():
         def accept(f):
@@ -68,7 +102,27 @@
 
         return accept
 
+主路径函数的定义
+---------------------
+
 主路径指定了一系列事件，从应用起始页执行这些事件会将应用引到至性质的起始状态（满足前置条件的页面）。
+下述的@mainPath装饰器将用户定义的一条性质封装在数据结构MainPath中，并对这个性质的函数进行使用MAINPATH_MARKER进行标记。
+
+以下是MainPath数据结构的定义。function用于存放用户定义的mainPath函数对象，path为对这个函数进行源代码处理后获取的详细路径步骤，为一个以列表的形式存储的各个步骤的源代码。
+
+.. code-block:: python
+
+    @attr.s()
+    class MainPath:
+        
+        # `function` denotes the function of `@mainPath.
+        function:Callable = attr.ib()
+
+        # the interaction steps (events) in the main path
+        path: List[str] = attr.ib()  
+
+
+@mainPath装饰器将用户定义的一条性质封装在数据结构MainPath中，其中，MAINPATH_MARKER是一个常量。
 
 .. code-block:: python
 
