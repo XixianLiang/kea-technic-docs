@@ -57,6 +57,6 @@
 
 .. toctree:: 
     user-interface/cli.rst
-    user-interface/keaTest-suite/decorators.rst
+    user-interface/keaTest-suite/kea-test.rst
     kea/keaTestElements.rst
     kea/kea.rst
