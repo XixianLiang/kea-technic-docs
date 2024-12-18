@@ -3,8 +3,15 @@
 
 在KeaTest中，使用装饰器定义性质。装饰器的作用是对函数本身进行修改。在Kea中，用户的初始化、前置条件、主路径函数都是一个函数，
 我们使用装饰器获取函数体，并对这个函数体进行标记。由于python中函数为一等对象，我们使用装饰器获取函数体后可以动态地往这个函数对象中
-设置属性，我们根据不同的装饰器，设置不同的MARKER属性标记。此时的数据结构如下图所示。在Kea加载性质的时候，我们读取如下的数据结构，并
-将如下的数据结构通过KeaTestElements类进行读取，并转换为方便Kea读取和处理的数据结构：KeaTestElements。
+设置属性，我们根据不同的装饰器，设置不同的MARKER属性标记。在Kea加载性质的时候，我们读取如下的数据结构，
+并将如下的数据结构通过KeaTestElements类进行读取，并转换为方便Kea读取和处理的数据结构：KeaTestElements。
+
+.. figure:: ../../../../images/decorators-keaTestElements.png
+    :align: center
+
+    从用户自定义KeaTest到运行时KeaTestElements的转换
+
+
 
 @rule装饰器用于定义一条性质。
 
