@@ -59,3 +59,4 @@
     
     user-interface/keaTest-suite/decorators.rst
     kea/keaTestElements.rst
+    kea/kea.rst
