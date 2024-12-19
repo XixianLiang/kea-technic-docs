@@ -62,6 +62,8 @@
     user-interface/keaTest-suite/pdl_driver.rst
     kea/keaTestElements.rst
     kea/kea.rst
-    InputGenerator/InputManager
-    InputGenerator/random
-    InputGenerator/MainPath Guided Policy
+    fuzzer/droidbot.rst
+    fuzzer/hmdroidbot.rst
+    InputGenerator/InputManager.rst
+    InputGenerator/random.rst
+    InputGenerator/MainPath Guided Policy.rst
