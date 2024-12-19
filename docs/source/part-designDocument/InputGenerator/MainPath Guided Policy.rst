@@ -252,9 +252,9 @@ GuidedPolicy类中的成员方法
 
 1. **get_next_event_from_main_path**
    
-   获取主路径上应该执行的下一个事件。
+    获取主路径上应该执行的下一个事件。
 
-   .. code-block:: python
+    .. code-block:: python
 
         def get_next_event_from_main_path(self):
             if self.current_index_on_main_path == self.mutate_node_index_on_main_path:
@@ -323,7 +323,7 @@ GuidedPolicy类中的成员方法
         
 3. **stop_mutation**
    
-   停止探索过程，并重置参数。
+    停止探索过程，并重置参数。
 
     .. code-block:: python
 

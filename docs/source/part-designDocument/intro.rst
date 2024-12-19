@@ -36,11 +36,9 @@
     │   ├── env_manager.py
     │   ├── input_event.py      // 输入事件
     │   ├── input_manager.py    // 输入(策略)管理器
-    │   ├── input_policy.py     // 输入策略库
-    │   ├── input_script.py     
+    │   ├── input_policy.py     // 输入策略库 
     │   ├── intent.py           // intent 操作库
     │   ├── kea.py              // kea工具
-    │   ├── monitor.py
     │   ├── android_pdl_driver.py       // 安卓PDL驱动
     │   ├── harmonyos_pdl_driver.py     // 鸿蒙PDL驱动
     │   ├── similarity.py       // 组件树结构相似度比对库
@@ -64,6 +62,8 @@
     kea/kea.rst
     fuzzer/droidbot.rst
     fuzzer/hmdroidbot.rst
-    InputGenerator/InputManager.rst
-    InputGenerator/random.rst
-    InputGenerator/MainPath Guided Policy.rst
+    InputGenerator/InputManager
+    InputGenerator/random
+    InputGenerator/MainPath Guided Policy
+    InputGenerator/llm
+    stateful_testing/Bundle

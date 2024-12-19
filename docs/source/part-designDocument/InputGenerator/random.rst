@@ -1,64 +1,109 @@
-RandomPolicy类
-===========================
+RandomPolicy
+================
 
-RandomPolicy类是工具中用于生成基于当前应用状态的随机事件的策略类。在RandomPolicy类中，存储的内容和对外暴露的方法主要有：
+RandomPolicy类是随机事件生成策略的核心类。
+主要负责基于当前应用状态生成随机事件。
+该类提供了完整的随机事件生成策略的事件生成过程。
+RandomPolicy所包含的主要方法有：
 
-- 根据应用状态生成随机事件的方法。
-- 根据策略重启应用或清除并重新安装应用的方法。
-- 检查性质并执行相应规则的方法。
+- 根据当前状态生成一个随机事件。
+- 根据配置重启或重新安装应用。
+- 在满足预条件的情况下，根据随机性决定是否检查属性。
 
-..
- .. figure:: ../../../images/class_randompolicy.png
+随机事件生成策略的介绍
+--------------------------
+
+随机事件生成策略是一种简单有效的策略，它可以在没有明确指导路径的情况下探索应用的状态空间。
+具体来说，该策略会根据当前应用的状态随机生成事件，以期达到未探索的状态或触发应用中的某些属性。
+这种策略特别适用于那些没有明确测试路径或需要广泛覆盖应用状态的场景。
+
+.. figure:: ../../../images/random_flowchart.png
     :align: center
 
-    RandomPolicy类的组成
+    随机探索策略的流程图
+
+具体执行步骤如下：
+
+步骤1：检查是否满足生成事件的条件，即事件计数是否为首次生成事件或者上一个事件是否为应用重新安装事件。
+
+步骤2：如果满足条件，则运行初始化器并获取设备当前状态。
+
+步骤3：判断当前状态是否为空，如果是，则等待5秒并返回一个名称为"BACK"的键事件。
+
+步骤4：检查事件计数是否是重启应用事件数量的倍数，如果是，则根据配置决定是清除并重新安装应用还是仅仅重启应用。
+
+步骤5：获取所有满足预条件的规则，如果存在这样的规则，则记录当前时间，并根据随机性决定是否检查属性。
+
+步骤6：如果决定检查属性，则执行属性检查。如果检查后需要重启应用，则记录日志并返回应用杀进程事件；否则，不重启应用。
+
+步骤7：如果因为随机性决定不检查属性，则记录日志并继续。
+
+步骤8：基于当前应用状态生成一个随机事件。这包括将应用移至前台（如果需要），获取当前状态可能的输入事件，并添加返回键和旋转设备事件。
+
+步骤9：从可能的事件列表中随机选择一个事件。如果选择的是旋转设备事件，则根据上次旋转事件的方向选择相反方向的旋转事件。
+
+步骤10：返回生成的随机事件，该事件将被用于与应用的交互。
+
+随机事件生成策略的伪代码
+----------------------------
+
+
+:math:`\textbf{Algorithm:} Random Event Generation`
+
+:math:`\textbf{Input:} None`
+    
+:math:`\textbf{Output:} Generated Event`
+
+.. code-block::
+    :linenos:
+
+    Function generate_event()
+        current_state ← get_current_state()
+        if current_state is None:
+            wait(5 seconds)
+            return KeyEvent(name="BACK")
+        if event_count % number_of_events_that_restart_app == 0:
+            if clear_and_reinstall_app:
+                return ReInstallAppEvent(app)
+            else:
+                return KillAndRestartAppEvent(app)
+        rules_to_check ← get_rules_whose_preconditions_are_satisfied()
+        if len(rules_to_check) > 0:
+            if random() < 0.5:
+                check_property()
+                if restart_app_after_check_property:
+                    return KillAppEvent(app)
+                return None
+        event ← generate_random_event_based_on_current_state()
+        return event
 
 RandomPolicy类中的数据结构
---------------------------------
+---------------------------
 
-1. **事件计数器(event_count)**
+1. **event_count**
    
-   用于跟踪生成的事件数量，以决定何时重启应用或执行其他策略。
+    event_count整型，记录了已经生成的事件数量。
 
-2. **最后旋转事件(last_rotate_events)**
+2. **number_of_events_that_restart_app**
    
-   存储最后一次旋转设备的事件，用于生成与上次不同的旋转事件。
+    number_of_events_that_restart_app整型，记录了在重启应用前需要生成的事件数量。
+
+3. **clear_and_reinstall_app**
+   
+    clear_and_reinstall_app布尔型，指示是否在重启应用前清除并重新安装应用。
+
+4. **restart_app_after_check_property**
+   
+    restart_app_after_check_property布尔型，指示在检查属性后是否重启应用。
 
 RandomPolicy类中的成员方法
--------------------------------------
-
-构造函数
-~~~~~~~~~~~~~~~
-
-__init__方法
-~~~~~~~~~~~~~~~
-
-``__init__`` 方法用于初始化RandomPolicy实例，并设置随机事件生成的基本参数。
-
-:参数:
-   - ``device``: 设备实例。
-   - ``app``: 应用实例。
-   - ``kea``: Kea实例，用于性质测试。
-   - ``restart_app_after_check_property``: 检查性质后是否重启应用。
-   - ``number_of_events_that_restart_app``: 重启应用前的事件数量。
-   - ``clear_and_reinstall_app``: 是否清除并重新安装应用。
-   - ``allow_to_generate_utg``: 是否允许生成UTG。
-
-:返回:
-   - 无
-
-:核心流程:
-   1. 调用父类构造函数初始化设备、应用和Kea实例。
-   2. 设置重启应用和清除安装的相关参数。
-   3. 初始化日志记录器。
-   4. 设置最后旋转设备的事件。
+---------------------------
 
 生成随机事件的方法
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
-generate_event方法
-~~~~~~~~~~~~~~~~~~~~~~~
-
+**generate_event**
+   
 ``generate_event`` 方法用于生成一个随机事件。
 
 :参数:
@@ -73,9 +118,32 @@ generate_event方法
    3. 检查是否有满足前提条件的规则，并根据随机性决定是否检查性质。
    4. 生成基于当前状态的随机事件。
 
-generate_random_event_based_on_current_state方法
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   .. code-block:: python
 
+        def generate_event(self):
+            current_state = self.from_state
+            if current_state is None:
+                time.sleep(5)
+                return KeyEvent(name="BACK")
+            if self.event_count % self.number_of_events_that_restart_app == 0:
+                if self.clear_and_reinstall_app:
+                    return ReInstallAppEvent(self.app)
+                return KillAndRestartAppEvent(self.app)
+            rules_to_check = self.kea.get_rules_whose_preconditions_are_satisfied()
+            if len(rules_to_check) > 0:
+                if random.random() < 0.5:
+                    self.check_rule_whose_precondition_are_satisfied()
+                    if self.restart_app_after_check_property:
+                        return KillAppEvent(self.app)
+                    return None
+            event = self.generate_random_event_based_on_current_state()
+            return event
+
+生成随机事件的成员方法
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**generate_random_event_based_on_current_state**
+   
 ``generate_random_event_based_on_current_state`` 方法用于基于当前状态生成一个随机事件。
 
 :参数:
@@ -89,4 +157,21 @@ generate_random_event_based_on_current_state方法
    2. 如果需要，将应用移至前台。
    3. 获取当前状态可能的输入事件。
    4. 根据随机选择生成一个事件。
+
+   .. code-block:: python
+
+        def generate_random_event_based_on_current_state(self):
+            current_state = self.from_state
+            event = self.move_the_app_to_foreground_if_needed(current_state)
+            if event is not None:
+                return event
+            possible_events = current_state.get_possible_input()
+            possible_events.append(KeyEvent(name="BACK"))
+            possible_events.append(RotateDevice())
+            self._event_trace += EVENT_FLAG_EXPLORE
+            event = random.choice(possible_events)
+            return event
+
+
+
 
