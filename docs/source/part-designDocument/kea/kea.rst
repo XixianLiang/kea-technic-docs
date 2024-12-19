@@ -55,6 +55,12 @@ load_app_properties 从用户指定的性质文件中读取性质并存储入Kea
 *注：为了描述清晰，简化的代码仅对核心流程进行抽象并展示，实际代码与简化的参考代码不完全一致。
 下文将展示的其他简化代码遵循的规则相同。*
 
+:参数: 
+    - ``property_files:List[str]`` : 用户自定义性质的文件路径列表
+
+:返回:
+    - 无
+
 .. code-block:: python
 
     @classmethod
@@ -79,7 +85,7 @@ load_app_properties 从用户指定的性质文件中读取性质并存储入Kea
                     if is_subclass(obj, KeaTest):
                         cls.load_KeaTest(obj)
 
-2. **load_KeaTest**
+1. **load_KeaTest**
    
 load_KeaTest 从 KeaTest 中取出用户自定义的性质（含初始化函数对象、交互场景、主路径函数对象），
 转换为 KeaTestElements 数据结构并存储入 KeaTest_DB 。
@@ -92,6 +98,12 @@ load_KeaTest 的流程如下：
    2. 调用KeaTestElements的方法读取KeaTest中的性质，并存储进KeaTestElements。
 
 其实现通过简化的python代码展示如下：
+
+:参数: 
+    - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
+
+:返回:
+    - ``keaTestElements:KeaTestElements`` : 读取了keaTest对象的keaTestElements对象
 
 .. code-block:: python
 
@@ -126,6 +138,12 @@ load_KeaTest 的流程如下：
 
 其python风格的简化代码定义实现如下。
 
+:参数: 
+    - ``rules:List[Rule]`` : 性质交互场景列表
+
+:返回:
+    - 执行结果
+
 .. code-block:: python
 
     def execute_rules(rules):
@@ -136,7 +154,7 @@ load_KeaTest 的流程如下：
         execute_rule(rule_to_check)
 
 
-2. **execute_rule**
+1. **execute_rule**
 
 对于一条rule(性质)，执行之并返回执行结果。其返回的结果CHECK_RESULT是一个结构体常量，如下为它的五种返回情况及其含义：
 
@@ -149,6 +167,12 @@ load_KeaTest 的流程如下：
     5. PASS                   断言（后置条件）成功，性质通过
 
 其python风格的简化代码实现如下。
+
+:参数: 
+    - ``rules:List[Rule]`` : 性质交互场景列表
+
+:返回:
+    - ``CHECK_RESULT``: 执行结果
 
 .. code-block:: python
 
@@ -167,11 +191,17 @@ load_KeaTest 的流程如下：
 
         return CHECK_RESULT.PASS
 
-3. **get_rules_whose_preconditions_are_satisfied**
+1. **get_rules_whose_preconditions_are_satisfied**
 
 对于一组性质，检查他们的前置条件，并获取通过前置条件的性质。
 
 其python风格的简化代码如下：
+
+:参数: 
+    - 无
+
+:返回:
+    - ``rules_passed_precondition:Dict[Rule, KeaTest]``: 通过了前置条件的性质列表
 
 .. code-block:: python
 
@@ -192,10 +222,16 @@ load_KeaTest 的流程如下：
     无前置条件的性质被视为无条件执行，等价于前置条件恒成立。
 
 其python风格的简化代码如下：
+
+:参数: 
+    - 无
+
+:返回:
+    - ``rules_passed_precondition:Dict[Rule, KeaTest]``: 无前置条件的性质列表
    
 .. code-block:: python
 
-    def get_rules_without_preconditions(self) -> Dict["Rule", "KeaTest"]:
+    def get_rules_without_preconditions(self):
 
         for eaTestElements in KeaTest_DB:
             for target_rule in keaTestElements.rules:
@@ -209,6 +245,12 @@ load_KeaTest 的流程如下：
 因此需要获取驱动对象，并让其执行相应操作。驱动储存在前述数据结构的pdl_driver中。
 
 其python代码如下。
+
+:参数: 
+    - ``executable_script:str`` : 可执行的主路径步骤源代码
+
+:返回:
+    - 无
 
 .. code-block:: python
 

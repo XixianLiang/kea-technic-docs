@@ -33,8 +33,13 @@ load_rules接收一个用户自定义的keaTest对象，读取其中的rule并�
 load_initializers接收一个用户自定义的keaTest对象，读取其中的初始化函数对象Initializer并将其存储入initializers列表。
 load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主路径对象mainPath并将其存储入mainPaths列表。
 
-具体而言，在三个load方法中，均传入一个keaTest对象。这三个类成员方法会在其中查找含有相对应MARKER标记的函数对象，
-并将其相应的数据结构（Rule, Initializer和MainPath）以列表的方式组织存储起来。
+具体而言，在三个load方法的执行步骤相似，其执行步骤可描述如下：
+
+.. code-block:: 
+
+    1. 传入一个keaTest对象。
+    2. 在传入的keaTest对象中查找含有相对应MARKER标记的函数对象。
+    3. 将其相应的数据结构（Rule, Initializer和MainPath）以列表的方式组织存储为成员变量。
 
 .. figure:: ../../../images/keaTestElements-loader.png
     :align: center
@@ -42,6 +47,15 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
     KeaTestElements 的成员方法读取KeaTest中的数据，转换为方便Kea使用的数据结构
 
 三个成员方法的具体实现如下：
+
+1. **load_rules**
+   
+:参数: 
+    - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
+
+:返回:
+    - 无
+
 
 .. code-block:: python
 
@@ -54,6 +68,16 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
             if rule is not None:
                 self.rules.append(rule)
 
+2. **load_initializers**
+
+:参数: 
+    - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
+
+:返回:
+    - 无
+
+.. code-block:: python
+
     def load_initializers(self, keaTest:"KeaTest"):
         """
         Load the initializers from the KeaTest class (user written property).
@@ -62,6 +86,16 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
             initializer = getattr(v, INITIALIZER_MARKER, None)
             if initializer is not None:
                 self.initializers.append(initializer)
+
+3. **load_mainPaths**
+
+:参数: 
+    - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
+
+:返回:
+    - 无
+
+.. code-block:: python
 
     def load_mainPaths(self, keaTest:"KeaTest"):
         """
