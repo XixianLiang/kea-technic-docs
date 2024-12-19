@@ -63,3 +63,4 @@
     kea/keaTestElements.rst
     kea/kea.rst
     InputGenerator/InputManager
+    InputGenerator/random
