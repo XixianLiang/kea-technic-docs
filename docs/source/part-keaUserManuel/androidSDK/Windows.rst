@@ -1,76 +1,75 @@
-Set up Android SDK Environment on Windows
+在 Windows 上设置 Android SDK 环境
 ========================================================
 
-1. Install the Android Command Line Tools.
-    Go to `Android Developer <https://developer.android.com/studio>`_ and Download the tools that match your operating system.
+1. 安装 Android 命令行工具。
+   前往 `Android Developer <https://developer.android.com/studio>`_ 并下载与您的操作系统匹配的工具。
 
-    .. image::  ../../../images/android-command-line-tool.png
-        :align: center
+   .. image::  ../../../images/android-command-line-tool.png
+       :align: center
 
-    |
+   |
 
-    Unzip the downloaded ZIP file to the directory where you want to install the SDK.
+   将下载的 ZIP 文件解压到您希望安装 SDK 的目录中。
 
-    Move the contents of the ``cmdline-tools`` folder into the latest folder. The final structure should be:
+   将 ``cmdline-tools`` 文件夹中的内容移动到最新文件夹中。最终结构应为：
 
-    .. code-block::
+   .. code-block::
 
-        D:\AndroidSDK\cmdline-tools\latest
+       D:\AndroidSDK\cmdline-tools\latest
 
-2. Configure the related environment.
+2. 配置相关环境。
 
-    Install Java. (If you have already installed and configured it before, you should
-    check if your JDK match the Command Line Tools and then skip the following steps about Java)
+   安装 Java。（如果您之前已经安装并配置过，您应该检查您的 JDK 是否与命令行工具匹配，然后跳过以下关于 Java 的步骤）
 
-    Visit the official website of `Oracle JDK <https://www.oracle.com/java/technologies/downloads/#jdk21-windows>`_, choice the version suitable for Windows and download it.
+   访问 `Oracle JDK <https://www.oracle.com/java/technologies/downloads/#jdk21-windows>`_ 的官方网站，选择适合 Windows 的版本并下载。
 
-    | Here you can use ``JDK-21``
+   | 在这里，您可以使用 ``JDK-21``。
 
-    Then run the downloaded installer and follow the prompts to complete the installation.
-    Make sure to note the installation path for future reference.
+   然后运行下载的安装程序，按照提示完成安装。
+   确保记下安装路径以备将来参考。
 
-    .. code-block::
+   .. code-block::
 
-        D:\Java\jdk-21
+       D:\Java\jdk-21
 
-3. Set the environment variables.
+3. 设置环境变量。
 
-    Open the environment variable settings:
+   打开环境变量设置：
 
-    - Right-click on ``This PC`` or ``Computer`` and select ``Properties``.
-    - Click on ``Advanced system settings``.
-    - In the ``System Properties`` window, select ``Environment Variables``.
+   - 右键单击 ``此电脑`` 或 ``计算机``，选择 ``属性``。
+   - 点击 ``高级系统设置``。
+   - 在 ``系统属性`` 窗口中选择 ``环境变量``。
 
-    |
+   |
 
-    In the ``System Variables`` section, click ``New`` to add the ``JAVA_HOME`` variable, with the value set to the JDK installation path(``D:\Java\jdk-21``).
-    And add the ``ANDROID_HOME`` variable, with the AndroidSDK installation path(``D:\AndroidSDK``).
+   在 ``系统变量`` 部分，点击 ``新建`` 添加 ``JAVA_HOME`` 变量，值设置为 JDK 安装路径（``D:\Java\jdk-21``）。
+   并添加 ``ANDROID_HOME`` 变量，值设置为 AndroidSDK 安装路径（``D:\AndroidSDK``）。
 
-    Locate the ``Path`` variable, click ``Edit``, then add ``%JAVA_HOME%\bin``, ``%ANDROID_HOME%\tools``, ``%ANDROID_HOME%\emulator``, ``%ANDROID_HOME%\cmdline-tools\latest\bin``,
-    ``%ANDROID_HOME%\tools\bin``, ``%ANDROID_HOME%\cmdline-tools\latest`` and ``%ANDROID_HOME%\platform-tools``.
+   找到 ``Path`` 变量，点击 ``编辑``，然后添加 ``%JAVA_HOME%\bin``、``%ANDROID_HOME%\tools``、``%ANDROID_HOME%\emulator``、``%ANDROID_HOME%\cmdline-tools\latest\bin``、
+   ``%ANDROID_HOME%\tools\bin``、``%ANDROID_HOME%\cmdline-tools\latest`` 和 ``%ANDROID_HOME%\platform-tools``。
 
-4. Verify Installation
+4. 验证安装
 
-    Open the Command Prompt: Press ``Win + R``, type cmd, and then press ``Enter``.
+   打开命令提示符：按 ``Win + R``，输入 cmd，然后按 ``Enter``。
 
-    In the Command Prompt window, type ``java -version`` and ``javac -version``, then press Enter.
+   在命令提示符窗口中，输入 ``java -version`` 和 ``javac -version``，然后按 Enter。
 
-    .. code-block:: bash
+   .. code-block:: bash
 
-        java -version
-        javac -version
-        sdkmanager --version
+       java -version
+       javac -version
+       sdkmanager --version
 
-    If version information is displayed, it indicates that the configuration was successful.
+   如果显示版本信息，则表示配置成功。
 
-5. Verify if ``sdkmanager`` is installed successfully.
-    .. code-block:: bash
+5. 验证 ``sdkmanager`` 是否成功安装。
 
-        sdkmanager --update
-        sdkmanager --list
-        sdkmanager --licenses
+   .. code-block:: bash
 
-    Here you should get information says ``All SDK package licenses accepted``.
+       sdkmanager --update
+       sdkmanager --list
+       sdkmanager --licenses
 
-    Common commands for sdkmanager. You can learn from `this link <https://developer.android.com/tools/sdkmanager>`_.
+   在这里，您应该会看到信息显示 ``All SDK package licenses accepted``。
 
+   sdkmanager 的常用命令。您可以从 `此链接 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。

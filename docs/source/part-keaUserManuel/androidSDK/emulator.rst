@@ -1,8 +1,8 @@
-Create and run an emulator
+创建并运行模拟器
 =======================================
 
-You need to create an emulator before running Kea. See `this link <https://stackoverflow.com/questions/43275238/how-to-set-system-images-path-when-creating-an-android-avd>`_ for how to create avd using `avdmanager <https://developer.android.com/studio/command-line/avdmanager>`_.
-The following sample command will help you create an emulator, which will help you start using Kea quickly：
+在运行 Kea 之前，您需要创建一个模拟器。有关如何使用 `avdmanager <https://developer.android.com/studio/command-line/avdmanager>`_ 创建 avd 的信息，请参见 `此链接 <https://stackoverflow.com/questions/43275238/how-to-set-system-images-path-when-creating-an-android-avd>`_。
+以下示例命令将帮助您创建一个模拟器，从而快速开始使用 Kea：
 
 .. code-block:: console
 
@@ -11,7 +11,7 @@ The following sample command will help you create an emulator, which will help y
     avdmanager create avd --force --name Android10.0 --package 'system-images;android-29;google_apis;x86' --abi google_apis/x86 --sdcard 1024M --device "pixel_2"
 
 
-Next, you can start one emulator and assign their port numbers with the following commands:
+接下来，您可以使用以下命令启动一个模拟器并分配其端口号：
 
 .. code-block:: console
 
