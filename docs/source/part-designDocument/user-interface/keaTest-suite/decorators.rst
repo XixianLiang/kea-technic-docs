@@ -35,6 +35,13 @@ Decorators (装饰器)
 
 @rule装饰器用于定义一条性质。其中，RULE_MARKER为一个常量。
 
+:参数:
+    - ``f: Callable[[Any], None]`` : 一个交互场景函数对象
+
+:返回:
+    - ``Callable[[Any], None]`` : 被RULE_MARKER标记后已解析Rule的函数对象
+
+
 .. code-block:: python
 
     def rule() -> Callable:
@@ -52,6 +59,12 @@ Decorators (装饰器)
 
 @precondition前提条件指定了属性何时可以被执行。一个属性可以有多个前提条件，每个前提条件由 `@precondition` 指定。其中，
 PRECONDITIONS_MARKER为一个常量。
+
+:参数:
+    - ``precond: Callable[[Any], bool]`` : 一个返回布尔值的已经被@rule装饰过的函数对象
+
+:返回:
+    - ``Callable[[Any], bool]`` : 被RULE_MARKER标记后已解析前置条件的函数
 
 .. code-block:: python
 
@@ -91,6 +104,12 @@ PRECONDITIONS_MARKER为一个常量。
 
 @initializer装饰器用于定义一个初始化函数，其中，INITIALIZER_MARKER是一个常量。
 
+:参数:
+    - ``f: Callable[[Any], None]`` : 定义了初始化事件的初始化函数对象
+
+:返回:
+    - ``Callable[[Any], None]`` : 被INITIALIZER_MARKER标记的初始化函数对象
+
 .. code-block:: python
 
     def initializer():
@@ -126,6 +145,12 @@ PRECONDITIONS_MARKER为一个常量。
 
 
 @mainPath装饰器将用户定义的一条性质封装在数据结构MainPath中，其中，MAINPATH_MARKER是一个常量。
+
+:参数:
+    - ``f: Callable[[Any], None]`` : 定义了主路径事件的函数对象
+
+:返回:
+    - ``Callable[[Any], None]`` : 被MAINPATH_MARKER标记的初始化函数对象
 
 .. code-block:: python
 

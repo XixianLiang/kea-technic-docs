@@ -1,7 +1,7 @@
-HMDroidBot
+HMDroidbot
 ====================
 
-HMDroidBot是kea在应用探索阶段与安卓设备交互的类。主要提供生成事件，截图等方法。HMDroidBot同时提供一个UTG(UI Transition Graph, 事件迁移图)。
+HMDroidbot是kea在应用探索阶段与安卓设备交互的类。主要提供生成事件，截图等方法。HMDroidbot同时提供一个UTG(UI Transition Graph, 事件迁移图)。
 可以基于事件迁移图，以基于模型的测试(MBT, Model Based Testing)编写更高级的应用探索策略。
 
 .. note:: 
@@ -10,7 +10,7 @@ HMDroidBot是kea在应用探索阶段与安卓设备交互的类。主要提供�
 
     https://github.com/ecnusse/HMDroidbot
 
-HMDroidBot项目架构
+HMDroidbot项目架构
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 HMDroidbot项目架构组成部分有：
@@ -30,7 +30,7 @@ HMDroidbot项目架构组成部分有：
 .. figure:: ../../../images/hmdroidbot.png
     :align: center
 
-    HMDroidBot 项目架构图
+    HMDroidbot 项目架构图
 
 因为InputManager, InputPolicy与Kea的输入策略重点相关，故另开章节进行介绍。hmdriver2为参考的框架，未做开发修改。
 以下介绍除上述三个功能外的其他组成部分。其中EventLog、InputEvent、UTG基本复用droidbot。

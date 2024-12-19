@@ -18,44 +18,44 @@ CLI实现的介绍
 
 1. **解析命令行和配置文件参数** 
    
-   - 使用`argparse`库创建一个参数解析器。
-   - 定义接受的命令行参数，例如`-f`用于指定属性文件，`-d`用于指定设备序列号等。
+   - 使用 ``argparse`` 库创建一个参数解析器。
+   - 定义接受的命令行参数，例如 ``-f`` 用于指定属性文件，``-d`` 用于指定设备序列号等。
    - 解析命令行输入的参数。
 
 2. **检查是否加载配置文件**
    
-   - 检查命令行参数中是否包含了`--load_config`标志，该标志指示是否从配置文件`config.yml`中加载参数。
+   - 检查命令行参数中是否包含了 ``--load_config`` 标志，该标志指示是否从配置文件 ``config.yml`` 中加载参数。
 
 3. **从`config.yml`加载参数**
    
-   - 如果指定了`--load_config`，则调用`load_ymal_args`函数从`config.yml`文件中读取参数。
+   - 如果指定了 ``--load_config`` ，则调用 ``load_ymal_args`` 函数从 ``config.yml`` 文件中读取参数。
    - 这些参数会覆盖命令行中指定的参数。
 
 4. **使用命令行参数**
    
-   - 如果没有指定`--load_config`，则直接使用命令行解析得到的参数。
+   - 如果没有指定 ``--load_config`` ，则直接使用命令行解析得到的参数。
 
 5. **设置参数并创建`Setting`实例**
    
-   - 根据解析得到的参数，创建一个`Setting`类的实例，该实例包含了所有需要的配置信息。
+   - 根据解析得到的参数，创建一个 ``Setting`` 类的实例，该实例包含了所有需要的配置信息。
 
 6. **加载PDL驱动**
    
-   - 根据`Setting`实例中的`is_harmonyos`属性判断目标设备是Android还是HarmonyOS。
+   - 根据 ``Setting`` 实例中的 ``is_harmonyos`` 属性判断目标设备是Android还是HarmonyOS。
    - 根据平台加载相应的PDL（Property Description Language）驱动。
 
 7. **创建`Kea`实例**
    
-   - 创建`Kea`类的实例，`Kea`可能是一个自动化测试框架的核心类。
+   - 创建 ``Kea`` 类的实例， ``Kea`` 可能是一个自动化测试框架的核心类。
 
 8. **加载应用属性**
    
-   - 使用`Kea.load_app_properties`方法加载需要测试的应用属性，这些属性定义了要测试的应用行为。
+   - 使用 ``Kea.load_app_properties`` 方法加载需要测试的应用属性，这些属性定义了要测试的应用行为。
 
 9.  **启动`Kea`**
     
-   - 调用`start_kea`函数，传入`Kea`实例和`Setting`实例，开始执行自动化测试流程。
-   - `start_kea`函数会初始化`DroidBot`，它是`Kea`的数据生成器，并启动测试。
+   - 调用 ``start_kea`` 函数，传入 ``Kea`` 实例和 ``Setting`` 实例，开始执行自动化测试流程。
+   - ``start_kea`` 函数会初始化 ``DroidBot`` ，它是 ``Kea`` 的数据生成器，并启动测试。
 
 命令行参数解析
 ----------------
@@ -111,8 +111,9 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 负责解析命令行输入的参数。
     - 根据用户输入设置相应的命令行参数，并处理 `-load_config` 选项以决定是否从 YAML 配置文件中加载参数。
   
-  其简化代码如下：
-.. code-block:: python
+    其简化代码如下：
+
+.. code-block:: python 
 
     def parse_args():
         """Parse, load and sanitize the args from the command line and the config file `config.yml`.
@@ -164,7 +165,8 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 负责从 `config.yml` YAML 配置文件中读取参数。
     - 将配置文件中的参数值应用到参数对象中，覆盖命令行输入的参数。
   
-  其简化代码如下：
+    其简化代码如下：
+
 .. code-block:: python
 
     def load_ymal_args(opts):
@@ -197,6 +199,7 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 确保所有参数在传递给 Kea 之前都是有效和一致的。
   
     其简化代码如下：
+
 .. code-block:: python
     
     def sanitize_args(options):
@@ -231,6 +234,7 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 存储和管理如 APK 路径、设备序列号、输出目录等参数。
   
     其简化代码如下：
+
 .. code-block:: python
     
   class Setting:
@@ -268,7 +272,8 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 根据目标平台（Android 或 HarmonyOS）加载相应的 PDL 驱动。
     - 确保 Kea 能够与目标设备的操作系统交互。
 
-   其简化代码如下：
+    其简化代码如下：
+
 .. code-block:: python
     
     def load_pdl_driver(settings: "Setting"):
@@ -286,7 +291,8 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 初始化 DroidBot 实例，并设置 Kea 的 PDL 驱动。
     - 创建 Kea 实例，加载应用属性，并开始执行测试。
 
-   其简化代码如下：
+    其简化代码如下：
+
 .. code-block:: python
      
     def start_kea(kea:"Kea", settings:"Setting" = None):
@@ -332,7 +338,8 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
     - 作为程序的入口点，串联起整个 Kea 启动流程。
     - 调用其他函数完成参数解析、配置加载、PDL 驱动加载和 Kea 启动。
 
-   其简化代码如下：
+    其简化代码如下：
+
 .. code-block:: python
      
     def main():
