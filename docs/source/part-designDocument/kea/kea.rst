@@ -32,86 +32,86 @@ Kea类中的成员方法
 -------------------------
 
 读取性质的相关方法
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 读取性质的相关方法主要对外提供读取用户自定义相关性质的方法。这些性质被读取后会按keaTestElements数据结构的方式组织，
 并存储进入KeaTest_DB。
 
 1. **load_app_properties**
 
-   load_app_properties 从用户指定的性质文件中读取性质并存储入Kea，其核心流程如下。
+load_app_properties 从用户指定的性质文件中读取性质并存储入Kea，其核心流程如下。
 
-   .. code-block:: 
+.. code-block:: 
 
-       1. 去除重复指定的文件。
-       2. 对每个文件，检查文件的后缀名是否为.py以确认文件有效性。
-       3. 通过导入模块的方式导入用户定义的性质。
-       4. 为模块设置对应的系统的pdl_driver。
-       5. 检查在步骤3中获得的模块的成员，识别其中的用户定义性质（KeaTest的子类对象）并调用load_KeaTest方法加载他们。
-       6. 回到步骤2直至所有用户自定义文件被加载完毕。
-   
-   具体步骤的简化的python风格代码如下：
+    1. 去除重复指定的文件。
+    2. 对每个文件，检查文件的后缀名是否为.py以确认文件有效性。
+    3. 通过导入模块的方式导入用户定义的性质。
+    4. 为模块设置对应的系统的pdl_driver。
+    5. 检查在步骤3中获得的模块的成员，识别其中的用户定义性质（KeaTest的子类对象）并调用load_KeaTest方法加载他们。
+    6. 回到步骤2直至所有用户自定义文件被加载完毕。
 
-   *注：为了描述清晰，简化的代码仅对核心流程进行抽象并展示，实际代码与简化的参考代码不完全一致。
-   下文将展示的其他简化代码遵循的规则相同。*
+具体步骤的简化的python风格代码如下：
 
-   .. code-block:: python
+*注：为了描述清晰，简化的代码仅对核心流程进行抽象并展示，实际代码与简化的参考代码不完全一致。
+下文将展示的其他简化代码遵循的规则相同。*
 
-        @classmethod
-        def load_app_properties(cls, property_files):
+.. code-block:: python
 
-            remove_duplicated_files(property_files)
+    @classmethod
+    def load_app_properties(cls, property_files):
 
-            for file in property_files:
+        remove_duplicated_files(property_files)
 
-                check_file_basename(file)
+        for file in property_files:
 
-                module = get_module_name(file)
-                
-                try:
-                    module = importlib.import_module(module_name)
+            check_file_basename(file)
 
-                    # set the pdl driver in the modules (the user written properties)
-                    module.d = cls._pdl_driver
+            module = get_module_name(file)
+            
+            try:
+                module = importlib.import_module(module_name)
 
-                    # find all kea tests in the module and attempt to Load them.
-                    for obj in getmembers(module):
-                        if is_subclass(obj, KeaTest):
-                            cls.load_KeaTest(obj)
+                # set the pdl driver in the modules (the user written properties)
+                module.d = cls._pdl_driver
+
+                # find all kea tests in the module and attempt to Load them.
+                for obj in getmembers(module):
+                    if is_subclass(obj, KeaTest):
+                        cls.load_KeaTest(obj)
 
 2. **load_KeaTest**
    
-    load_KeaTest 从 KeaTest 中取出用户自定义的性质（含初始化函数对象、交互场景、主路径函数对象），
-    转换为 KeaTestElements 数据结构并存储入 KeaTest_DB 。
+load_KeaTest 从 KeaTest 中取出用户自定义的性质（含初始化函数对象、交互场景、主路径函数对象），
+转换为 KeaTestElements 数据结构并存储入 KeaTest_DB 。
 
-    load_KeaTest 的流程如下：
+load_KeaTest 的流程如下：
 
-    .. code-block:: 
+.. code-block:: 
 
-       1. 初始化一个KeaTestElements，以 <KeaTest, KeaTestElements> 数据项的方式存储进KeaTest_DB
-       2. 调用KeaTestElements的方法读取KeaTest中的性质，并存储进KeaTestElements。
-    
-    其实现通过简化的python代码展示如下：
+   1. 初始化一个KeaTestElements，以 <KeaTest, KeaTestElements> 数据项的方式存储进KeaTest_DB
+   2. 调用KeaTestElements的方法读取KeaTest中的性质，并存储进KeaTestElements。
 
-    .. code-block:: python
+其实现通过简化的python代码展示如下：
 
-        @classmethod
-        def init_KeaTestElements(cls, keaTest):
+.. code-block:: python
 
-            keaTest_name = get_keaTest_name(keaTest)
-            keaTestElements = KeaTestElements(keaTest_name)
-            KeaTest_DB.add_item(keaTest, KeaTestElements)
-            return keaTestElements 
+    @classmethod
+    def init_KeaTestElements(cls, keaTest):
+
+        keaTest_name = get_keaTest_name(keaTest)
+        keaTestElements = KeaTestElements(keaTest_name)
+        KeaTest_DB.add_item(keaTest, KeaTestElements)
+        return keaTestElements 
 
 
-        @classmethod
-        def load_KeaTest(cls, keaTest):
+    @classmethod
+    def load_KeaTest(cls, keaTest):
 
-            keaTestElements = cls.init_KeaTestElements(keaTest)
-            keaTestElements.load_initializers(keaTest)        
-            keaTestElements.load_rules(keaTest)
-            keaTestElements.load_mainPaths(keaTest)
-    
+        keaTestElements = cls.init_KeaTestElements(keaTest)
+        keaTestElements.load_initializers(keaTest)        
+        keaTestElements.load_rules(keaTest)
+        keaTestElements.load_mainPaths(keaTest)
+
 
 
 性质执行相关方法
@@ -119,3 +119,99 @@ Kea类中的成员方法
 
 性质执行的相关方法主要对外提供与性质执行相关功能的接口，主要交由输入策略调用。如获取当前页面通过前置条件的性质，
 执行一条性质的交互场景等。
+
+1. **execute_rules**
+   
+对一组rules(性质)，随机选择一条性质并调用execute_rule方法尝试执行之。
+
+其python风格的简化代码定义实现如下。
+
+.. code-block:: python
+
+    def execute_rules(rules):
+
+        if rules is empty:
+            return CHECK_RESULT.PRECON_NOT_SATISFIED
+        rule_to_check = random.choice(rules)
+        execute_rule(rule_to_check)
+
+
+2. **execute_rule**
+
+对于一条rule(性质)，执行之并返回执行结果。其返回的结果CHECK_RESULT是一个结构体常量，如下为它的五种返回情况及其含义：
+
+.. code-block:: 
+
+    1. PRECOND_NOT_SATISFIED  前置条件不满足，一般由于页面不稳定引起
+    2. Ui_NOT_FOUND           找不到执行过程中某一步骤的控件
+    3. ASSERTION_FAILURE      断言（后置条件）失败，找到疑似应用错误
+    4. UNKNOWN_EXECPTION      未知的错误
+    5. PASS                   断言（后置条件）成功，性质通过
+
+其python风格的简化代码实现如下。
+
+.. code-block:: python
+
+    def execute_rule(rule, keaTest):
+
+        if precondition_satisfied(rule) == False:
+            return CHECK_RESULT.PRECON_NOT_SATISFIED
+        try:
+            execute(rule.function(keaTest))
+        except UiObjectNotFoundError:
+            return CHECK_RESULT.UI_NOT_FOUND
+        except AssertionError:
+            return CHECK_RESULT.ASSERTION_FAILURE
+        except Exception:
+            return CHECK_RESULT.UNKNOWN_EXECPTION
+
+        return CHECK_RESULT.PASS
+
+3. **get_rules_whose_preconditions_are_satisfied**
+
+对于一组性质，检查他们的前置条件，并获取通过前置条件的性质。
+
+其python风格的简化代码如下：
+
+.. code-block:: python
+
+    def get_rules_whose_preconditions_are_satisfied():
+        
+        for keaTestElements in KeaTest_DB:
+            for target_rule in keaTestElements:
+                if pass_precondition(target_rule) == True
+                    rules_passed_precondition.add(target_rule)
+
+        return rules_passed_precondition
+
+4. **get_rules_without_precondition**
+
+对于一组性质，若他们的前置条件，并获取无前置条件的性质。
+
+.. note:: 
+    无前置条件的性质被视为无条件执行，等价于前置条件恒成立。
+
+其python风格的简化代码如下：
+   
+.. code-block:: python
+
+    def get_rules_without_preconditions(self) -> Dict["Rule", "KeaTest"]:
+
+        for eaTestElements in KeaTest_DB:
+            for target_rule in keaTestElements.rules:
+                if len(target_rule.preconditions) == 0:
+                    rules_without_precondition.add(target_rule)
+        return rules_without_precondition
+
+5. **execute_event_from_main_path**
+
+对于给定的一个主路径步骤的源代码，尝试执行之。因为主路径中是用户利用PDL驱动编写的步骤，
+因此需要获取驱动对象，并让其执行相应操作。驱动储存在前述数据结构的pdl_driver中。
+
+其python代码如下。
+
+.. code-block:: python
+
+    def execute_event_from_main_path(self, executable_script):
+        d = self._pdl_driver
+        exec(executable_script)

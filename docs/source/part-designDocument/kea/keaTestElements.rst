@@ -71,3 +71,4 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
             mainPath = getattr(v, MAINPATH_MARKER, None)
             if mainPath is not None:
                 self.mainPaths.append(mainPath)
+
