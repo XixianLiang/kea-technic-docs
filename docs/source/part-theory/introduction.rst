@@ -1,14 +1,14 @@
-Introduction
+简介
 ====================================
 
-Kea introduces a general and practical testing technique based on property-based testing(PBT)
-for finding functional bugs in Mobile Apps. Given an app and some properties of interest (specified by a human tester),
-Kea automatically explores the app to validate the property. If the property is violated, Kea will output a bug report, which contains some GUI tests illustrating the violation.
-Specifically, to support the application of property-based testing, Kea provides
+Kea 引入了一种基于性质的测试（PBT），用于发现移动应用中的功能性错误。用户给定一个应用程序和一些感兴趣的应用性质，
+Kea 会自动探索该应用以验证这些应用性质。如果应用性质被违反Kea将记录这些数据。最终Kea会输出一个缺陷报告，其中包含一些性质违反的相关数据及截图。
 
-(1) A Python-based property description language to help users specify the desired app properties.
+Kea主要包含了：
 
-(2) Two exploration strategies to generate a large number of GUI tests for validating the properties.
+(1) 一种基于 Python 的移动应用性质描述语言，帮助用户指定所需的应用性质。
+
+(2) 三种探索策略，用于生成大量的 GUI 测试以验证这些性质。
 
 .. toctree::
 

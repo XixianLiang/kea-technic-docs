@@ -1,6 +1,6 @@
 .. _kea_mechanism:
 
-How It Works
+工作原理
 ========================
 
 .. image:: ../../../images/CoreProcess.gif
@@ -8,26 +8,22 @@ How It Works
 
 |
 
-The core process of Kea is showed in the gif above. Following is some procedure details:
+Kea 的核心流程如上图，以下是一些执行流程的细节：
 
-1. Analyze the functional characteristics and testing objectives of the mobile application under test.
-Use the special property description language to define the set of functional properties of the mobile application under test.
-Each functional property includes preconditions ``P``, interaction scenarios ``I``, and postconditions ``Q``.
+1. 步骤1：分析被测移动应用功能特性和测试目标，使用软件功能性质描述语言定义被测移动应用的功能性质集合，
+   每个功能性质包括前置条件 ``P`` 、交互场景 ``I`` 和后置条件 ``Q``；
 
-2. Set the maximum test execution duration and the maximum number of execution events.
-Choose an exploration strategy. If the random exploration strategy is selected, proceed to Step 3;
-if the main path guiding strategy is selected, define a user event sequence as the main path based on the preconditions ``P``,
-and continue to Step 4.
+2. 将所有定义的功能性质集合的并集存储下来，设置最大测试执行时长、最大执行事件个数，选择探索策略，
+   若选择随机探索策略，则执行步骤3；若选择主路径引导策略，则根据前置条件 ``P``，
+   定义一个用户事件序列作为主路径，继续执行步骤4；
 
-3. Kea use the random exploration strategy to generate an event sequence, perform property detection,
-and record the corresponding test results and user interface screenshots until the maximum test execution time is reached.
-Proceed to Step 5.
+3. 使用随机探索策略生成事件序列，执行性质检测，记录对应的测试结果和用户界面截图，
+   直到达到最大测试执行时间，执行步骤5；
 
-4. Kea use the main path guiding strategy(the details are showed in the gif below) to generate an event sequence, perform property detection,
-and record the corresponding test results and user interface screenshots until the maximum test execution time is reached. Proceed to Step 5.
+4. 使用主路径引导策略生成事件序列(算法核心如下图)，执行性质检测，记录对应的测试结果和用户界面截图，
+   直到达到最大测试执行时间，执行步骤5；
 
 .. image:: ../../../images/MainPath.gif
             :align: center
 
-5. Based on the test results and user interface screenshots,
-Kea automatically generate a bug report for the mobile application under test.
+5. 基于测试结果和用户界面截图，自动生成被测移动应用的缺陷报告；
