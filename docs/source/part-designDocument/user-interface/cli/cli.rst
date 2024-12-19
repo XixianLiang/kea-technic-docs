@@ -3,6 +3,60 @@ CLI 实现说明
 
 本文档旨在解释 Kea 的命令行界面（CLI）是如何实现的，包括如何处理命令行参数、YAML 配置文件以及参数清洗。
 
+
+CLI实现的介绍
+--------------------
+
+下述流程图的介绍了Kea工具CLI的启动和配置过程。涵盖了从命令行参数解析、配置文件加载、测试环境设置到自动化测试执行的整个自动化测试准备和启动过程。通过这种方式，用户可以灵活地配置测试环境，并自动化地执行测试用例。
+
+.. figure:: ../../../../images/cli_flowchart.png
+    :align: center
+
+    CLI实现的流程图
+
+具体执行步骤如下：
+
+1. **解析命令行和配置文件参数** 
+   
+   - 使用 ``argparse`` 库创建一个参数解析器。
+   - 定义接受的命令行参数，例如 ``-f`` 用于指定属性文件，``-d`` 用于指定设备序列号等。
+   - 解析命令行输入的参数。
+
+2. **检查是否加载配置文件**
+   
+   - 检查命令行参数中是否包含了 ``--load_config`` 标志，该标志指示是否从配置文件 ``config.yml`` 中加载参数。
+
+3. **从`config.yml`加载参数**
+   
+   - 如果指定了 ``--load_config`` ，则调用 ``load_ymal_args`` 函数从 ``config.yml`` 文件中读取参数。
+   - 这些参数会覆盖命令行中指定的参数。
+
+4. **使用命令行参数**
+   
+   - 如果没有指定 ``--load_config`` ，则直接使用命令行解析得到的参数。
+
+5. **设置参数并创建`Setting`实例**
+   
+   - 根据解析得到的参数，创建一个 ``Setting`` 类的实例，该实例包含了所有需要的配置信息。
+
+6. **加载PDL驱动**
+   
+   - 根据 ``Setting`` 实例中的 ``is_harmonyos`` 属性判断目标设备是Android还是HarmonyOS。
+   - 根据平台加载相应的PDL（Property Description Language）驱动。
+
+7. **创建`Kea`实例**
+   
+   - 创建 ``Kea`` 类的实例， ``Kea`` 可能是一个自动化测试框架的核心类。
+
+8. **加载应用属性**
+   
+   - 使用 ``Kea.load_app_properties`` 方法加载需要测试的应用属性，这些属性定义了要测试的应用行为。
+
+9.  **启动`Kea`**
+    
+   - 调用 ``start_kea`` 函数，传入 ``Kea`` 实例和 ``Setting`` 实例，开始执行自动化测试流程。
+   - ``start_kea`` 函数会初始化 ``DroidBot`` ，它是 ``Kea`` 的数据生成器，并启动测试。
+
 命令行参数解析
 ----------------
 
@@ -56,27 +110,267 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 - `parse_args` 函数：
     - 负责解析命令行输入的参数。
     - 根据用户输入设置相应的命令行参数，并处理 `-load_config` 选项以决定是否从 YAML 配置文件中加载参数。
+  
+    其简化代码如下：
+
+.. code-block:: python 
+
+    def parse_args():
+        """Parse, load and sanitize the args from the command line and the config file `config.yml`.
+
+        The args are either specified via the command line or the config file `config.yml`.
+        The design purpose of config.yml is to ease specifying the args via a config file.
+        """
+        parser = argparse.ArgumentParser(description="Start kea to test app.",
+                                        formatter_class=argparse.RawTextHelpFormatter)
+        parser.add_argument("-f", nargs="+", action="store",dest="property_files", help="The app properties to be tested.")
+        parser.add_argument("-d", "--device_serial", action="store", dest="device_serial", default=None,
+                            help="The serial number of target device (use `adb devices` to find)")
+        parser.add_argument("-a","--apk", action="store", dest="apk_path",
+                            help="The file path to target APK")
+        parser.add_argument("-o","--output", action="store", dest="output_dir", default="output",
+                            help="directory of output")
+        parser.add_argument("-p","--policy", action="store", dest="policy",choices=["random", "guided", "llm"], default=DEFAULT_POLICY,  # tingsu: can we change "mutate" to "guided"?
+                            help='Policy used for input event generation. ')
+        parser.add_argument("-t", "--timeout", action="store", dest="timeout", default=DEFAULT_TIMEOUT, type=int,
+                            help="Timeout in seconds. Default: %d" % DEFAULT_TIMEOUT)
+        parser.add_argument("-n","--number_of_events_that_restart_app", action="store", dest="number_of_events_that_restart_app", default=100, type=int,
+                            help="Restart the app when this number of events has been executed. Default: 100")
+        parser.add_argument("-debug", action="store_true", dest="debug_mode",
+                            help="Run in debug mode (dump debug messages).")
+        parser.add_argument("-keep_app", action="store_true", dest="keep_app",
+                            help="Keep the app on the device after testing.")
+        parser.add_argument("-grant_perm", action="store_true", dest="grant_perm",
+                            help="Grant all permissions while installing. Useful for Android 6.0+.")
+        parser.add_argument("-is_emulator", action="store_true", dest="is_emulator",default=True,
+                            help="Declare the target device to be an emulator, which would be treated specially.")
+        parser.add_argument("-is_harmonyos", action="store_true", dest="is_harmonyos", default=False,
+                            help="use harmonyos devices")
+        parser.add_argument("-load_config", action="store_true", dest="load_config", default=False,
+                            help="load the args from config.yml, and the args in the command line will be ignored.")
+        parser.add_argument("-utg", action="store_true", dest="generate_utg", default=False,
+                            help="Generate UI transition graph")
+        options = parser.parse_args()
+
+        # load the args from the config file `config.yml`
+        if options.load_config:
+            options = load_ymal_args(options)
+
+        # sanitize these args
+        sanitize_args(options) 
+
+        return options
 
 - `load_yaml_args` 函数：
     - 负责从 `config.yml` YAML 配置文件中读取参数。
     - 将配置文件中的参数值应用到参数对象中，覆盖命令行输入的参数。
+  
+    其简化代码如下：
+
+.. code-block:: python
+
+    def load_ymal_args(opts):
+        """Load the args from the config file `config.yml`. 
+
+        The design purpose of config.yml is to ease specifying the args via a config file.
+        Note that the values of the args in config.yml would overwrite those args specified via the command line.
+        """
+        config_dict = get_yml_config()
+        for key, value in config_dict.items():
+            if key.lower() == "system" and value:
+                opts.is_harmonyos = value.lower() == "harmonyos"
+            elif key.lower() in ["app_path", "package", "package_name"] and value:
+                opts.apk_path = value
+            elif key.lower() == "policy" and value:
+                opts.policy = value
+            elif key.lower() == "output_dir" and value:
+                opts.output_dir = value
+            elif key.lower() == "count" and value:
+                opts.count = value
+            elif key.lower() in ["target", "device", "device_serial"] and value:
+                opts.device_serial = value
+            elif key.lower() in ["property", "properties", "file", "files"] and value:
+                opts.property_files = value
+        
+        return opts
 
 - `sanitize_args` 函数：
     - 对解析后的参数进行清洗和验证。
     - 确保所有参数在传递给 Kea 之前都是有效和一致的。
+  
+    其简化代码如下：
+
+.. code-block:: python
+    
+    def sanitize_args(options):
+        """sanitize of the args
+        
+        If the device serial has not been specified, the serial of the connected device will be automatically identified.
+        Note that this identification only works when *only* one device is connected.
+
+        The args `apk_path` and `property_files` are required.
+
+        If `apk_path` is not an apk file or a hap file, `apk_path` will be checked to see whether it denotes a valid app package name.
+        It allows us to test any existing app which has already been installed on the device.
+        """
+        if options.device_serial is None:   
+            identify_device_serial(options=options) 
+
+        if options.apk_path is None:
+            raise AttributeError("No target app. Use -a to specify the app to be tested")
+        
+        if options.property_files is None:
+            raise AttributeError("No properties. Use -f to specify the properties to be tested.")
+        
+        if not str(options.apk_path).endswith((".apk", ".hap")):
+            COLOR_YELLOW = "\033[93m"
+            COLOR_RESET = "\033[0m"
+            print(f"{COLOR_YELLOW}Warning: {options.apk_path} is not a valid apk or hap file ... may be an app package name, trying to validate this app package ...{COLOR_RESET}")
+            sanitize_app_package_name(options)
+
 
 - `Setting` 数据类：
     - 定义了 Kea 运行所需的配置参数的数据结构。
     - 存储和管理如 APK 路径、设备序列号、输出目录等参数。
+  
+    其简化代码如下：
+
+.. code-block:: python
+    
+  class Setting:
+    """`Setting` is a Python DataClass
+    """
+    apk_path: str
+    device_serial: str = None
+    output_dir:str ="output"
+    is_emulator: bool =True     #True for emulators, False for real devices.
+    policy_name: str = DEFAULT_POLICY
+    random_input: bool =True
+    script_path: str=None
+    event_interval: int= DEFAULT_EVENT_INTERVAL
+    timeout: int = DEFAULT_TIMEOUT
+    event_count: int= DEFAULT_EVENT_COUNT
+    cv_mode=None
+    debug_mode: bool=False
+    keep_app:bool=None
+    keep_env=None
+    profiling_method=None
+    grant_perm: bool=True
+    send_document: bool=True
+    enable_accessibility_hard=None
+    master=None
+    humanoid=None
+    ignore_ad=None
+    replay_output=None
+    number_of_events_that_restart_app:int =100
+    run_initial_rules_after_every_mutation=True
+    is_harmonyos:bool=False
+    generate_utg:bool=False
+    is_package:bool=False
 
 - `load_pdl_driver` 函数：
     - 根据目标平台（Android 或 HarmonyOS）加载相应的 PDL 驱动。
     - 确保 Kea 能够与目标设备的操作系统交互。
 
+    其简化代码如下：
+
+.. code-block:: python
+    
+    def load_pdl_driver(settings: "Setting"):
+        """Load the pdl (property description language) driver according to the target mobile platform
+            (e.g., Android, HarmonyOS).
+        """
+        if settings.is_harmonyos:
+            from kea.harmonyos_pdl_driver import HarmonyOS_PDL_Driver
+            return HarmonyOS_PDL_Driver(serial=settings.device_serial)
+        else:
+            from kea.android_pdl_driver import Android_PDL_Driver
+            return Android_PDL_Driver(serial=settings.device_serial)
+
 - `start_kea` 函数：
     - 初始化 DroidBot 实例，并设置 Kea 的 PDL 驱动。
     - 创建 Kea 实例，加载应用属性，并开始执行测试。
 
+    其简化代码如下：
+
+.. code-block:: python
+     
+    def start_kea(kea:"Kea", settings:"Setting" = None):
+
+        # droidbot is used as the data generator of Kea
+        droidbot = DroidBot(    
+            app_path=settings.apk_path,
+            device_serial=settings.device_serial,
+            is_emulator=settings.is_emulator,
+            output_dir=settings.output_dir,
+            env_policy = None,
+            policy_name=settings.policy_name,
+            random_input=settings.random_input,
+            script_path=settings.script_path,
+            event_interval=settings.event_interval,
+            timeout=settings.timeout,
+            event_count=settings.event_count,
+            cv_mode=settings.cv_mode,
+            debug_mode=settings.debug_mode,
+            keep_app=settings.keep_app,
+            keep_env=settings.keep_env,
+            profiling_method=settings.profiling_method,
+            grant_perm=settings.grant_perm,
+            send_document=settings.send_document,
+            enable_accessibility_hard=settings.enable_accessibility_hard,
+            master=settings.master,
+            humanoid=settings.humanoid,
+            ignore_ad=settings.ignore_ad,
+            replay_output=settings.replay_output,
+            kea=kea,
+            number_of_events_that_restart_app=settings.number_of_events_that_restart_app,
+            run_initial_rules_after_every_mutation=settings.run_initial_rules_after_every_mutation,
+            is_harmonyos=settings.is_harmonyos,
+            is_package=settings.is_package,
+            settings=settings,
+            generate_utg=settings.generate_utg
+        )
+
+        kea._pdl_driver.set_droidbot(droidbot)  
+        droidbot.start()
+
 - `main` 函数：
     - 作为程序的入口点，串联起整个 Kea 启动流程。
     - 调用其他函数完成参数解析、配置加载、PDL 驱动加载和 Kea 启动。
+
+    其简化代码如下：
+
+.. code-block:: python
+     
+    def main():
+        """the main entry of Kea.
+        """
+        # parse the args
+        options = parse_args()
+
+        # setup the setting
+        settings =  Setting(apk_path=options.apk_path,
+                        device_serial=options.device_serial,
+                        output_dir=options.output_dir,
+                        timeout=options.timeout,
+                        policy_name=options.policy,
+                        number_of_events_that_restart_app=options.number_of_events_that_restart_app,  # tingsu: do we need a better name?
+                        debug_mode=options.debug_mode,
+                        keep_app=options.keep_app,
+                        is_harmonyos=options.is_harmonyos,
+                        grant_perm=options.grant_perm,
+                        is_emulator=options.is_emulator,
+                        generate_utg=options.generate_utg
+                        )
+        
+        # load the pdl driver for Android/HarmonyOS
+        driver = load_pdl_driver(settings)
+        Kea.set_pdl_driver(driver)
+        # load the app properties to be tested
+        Kea.load_app_properties(options.property_files)
+
+        # create Kea
+        kea = Kea()
+        print(f"INFO: All Test cases: {kea._KeaTest_DB}") 
+        # start Kea
+        start_kea(kea, settings) 
