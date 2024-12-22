@@ -12,5 +12,9 @@
 
 其结果如下
 
-.. image:: ../../images/coverage.png
+.. figure:: ../../images/coverage.png
     :align: center
+    
+    kea覆盖率分析整体数据
+
+｜ 覆盖率的详细报告内容可 `点击查看 <../../htmlcov/index.html>`_。
