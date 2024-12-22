@@ -47,5 +47,5 @@ Contents
 .. toctree::
    :caption: 实验与结果
 
-   part-Appendix/trophies
-   part-Appendix/PDL
+   part-experiment/trophies
+   part-experiment/PDL
