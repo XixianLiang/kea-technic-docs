@@ -60,15 +60,12 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
 .. code-block:: python
 
     def load_rules(self, keaTest:"KeaTest"):
-        """
-        Load the rule from the KeaTest class (user written property).
-        """
         for _, v in inspect.getmembers(keaTest):
             rule = getattr(v, RULE_MARKER, None)
             if rule is not None:
                 self.rules.append(rule)
 
-2. **load_initializers**
+1. **load_initializers**
 
 :参数: 
     - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
@@ -79,15 +76,12 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
 .. code-block:: python
 
     def load_initializers(self, keaTest:"KeaTest"):
-        """
-        Load the initializers from the KeaTest class (user written property).
-        """
         for _, v in inspect.getmembers(keaTest):
             initializer = getattr(v, INITIALIZER_MARKER, None)
             if initializer is not None:
                 self.initializers.append(initializer)
 
-3. **load_mainPaths**
+1. **load_mainPaths**
 
 :参数: 
     - ``keaTest:KeaTest`` : 用户自定义性质的keaTest对象
@@ -98,9 +92,6 @@ load_mainPaths接收一个用户自定义的keaTest对象，读取其中的主�
 .. code-block:: python
 
     def load_mainPaths(self, keaTest:"KeaTest"):
-        """
-        Load the mainPaths from the KeaTest class (user written property).
-        """
         for _, v in inspect.getmembers(keaTest):
             mainPath = getattr(v, MAINPATH_MARKER, None)
             if mainPath is not None:

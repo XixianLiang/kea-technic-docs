@@ -3,8 +3,8 @@
 工作原理
 ========================
 
-.. image:: ../../../images/CoreProcess.gif
-            :align: center
+.. .. image:: ../../../images/CoreProcess.gif
+..             :align: center
 
 |
 
@@ -23,7 +23,7 @@ Kea 的核心流程如上图，以下是一些执行流程的细节：
 4. 使用主路径引导策略生成事件序列(算法核心如下图)，执行性质检测，记录对应的测试结果和用户界面截图，
 直到达到最大测试执行时间，执行步骤5；
 
-.. image:: ../../../images/MainPath.gif
-            :align: center
+.. .. image:: ../../../images/MainPath.gif
+..             :align: center
 
 5. 基于测试结果和用户界面截图，自动生成被测移动应用的缺陷报告；

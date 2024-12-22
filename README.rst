@@ -41,9 +41,9 @@ https://kea-technic-docs.readthedocs.io/zh-cn/latest/
 
     cd kea-technic-docs/docs
 
-    # You should delete the build dir every time you modify the file structure of the project
+    # You should clean build dir every time you modify the file structure of the project
     # Or the cache will affect the previewer of the esbonio extension.
-    rm -r build
+    make clean
 
     make html
 

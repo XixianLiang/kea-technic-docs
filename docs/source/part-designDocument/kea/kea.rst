@@ -77,10 +77,10 @@ load_app_properties 从用户指定的性质文件中读取性质并存储入Kea
             try:
                 module = importlib.import_module(module_name)
 
-                # set the pdl driver in the modules (the user written properties)
+                # set the pdl driver in the modules
                 module.d = cls._pdl_driver
 
-                # find all kea tests in the module and attempt to Load them.
+                # find all kea tests in the module. Load them.
                 for obj in getmembers(module):
                     if is_subclass(obj, KeaTest):
                         cls.load_KeaTest(obj)
