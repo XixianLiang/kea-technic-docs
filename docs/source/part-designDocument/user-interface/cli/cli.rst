@@ -11,6 +11,7 @@ CLI实现的介绍
 
 .. figure:: ../../../../images/cli_flowchart.png
     :align: center
+    :scale: 50 %
 
     CLI实现的流程图
 
@@ -137,30 +138,16 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 
 .. code-block:: python
 
-    def load_ymal_args(opts):
-        """Load the args from the config file `config.yml`. 
-
-        The design purpose of config.yml is to ease specifying the args via a config file.
-        Note that the values of the args in config.yml would overwrite those args specified via the command line.
-        """
-        config_dict = get_yml_config()
-        for key, value in config_dict.items():
-            if key.lower() == "system" and value:
-                opts.is_harmonyos = value.lower() == "harmonyos"
-            elif key.lower() in ["app_path", "package", "package_name"] and value:
-                opts.apk_path = value
-            elif key.lower() == "policy" and value:
-                opts.policy = value
-            elif key.lower() == "output_dir" and value:
-                opts.output_dir = value
-            elif key.lower() == "count" and value:
-                opts.count = value
-            elif key.lower() in ["target", "device", "device_serial"] and value:
-                opts.device_serial = value
-            elif key.lower() in ["property", "properties", "file", "files"] and value:
-                opts.property_files = value
-        
+    def load_yaml_args(opts):
+        config = get_yml_config()
+        key_map = {...}
+        for key, value in config.items():
+            key_lower = key.lower()
+            if value and key_lower in key_map:
+                key_map[key_lower](value)
+            
         return opts
+
 
 - `sanitize_args` 函数：
     - 对解析后的参数进行清洗和验证。
@@ -171,29 +158,12 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 .. code-block:: python
     
     def sanitize_args(options):
-        """sanitize of the args
-        
-        If the device serial has not been specified, the serial of the connected device will be automatically identified.
-        Note that this identification only works when *only* one device is connected.
-
-        The args `apk_path` and `property_files` are required.
-
-        If `apk_path` is not an apk file or a hap file, `apk_path` will be checked to see whether it denotes a valid app package name.
-        It allows us to test any existing app which has already been installed on the device.
-        """
-        if options.device_serial is None:   
-            identify_device_serial(options=options) 
-
-        if options.apk_path is None:
-            raise AttributeError("No target app. Use -a to specify the app to be tested")
-        
-        if options.property_files is None:
-            raise AttributeError("No properties. Use -f to specify the properties to be tested.")
-        
-        if not str(options.apk_path).endswith((".apk", ".hap")):
-            COLOR_YELLOW = "\033[93m"
-            COLOR_RESET = "\033[0m"
-            print(f"{COLOR_YELLOW}Warning: {options.apk_path} is not a valid apk or hap file ... may be an app package name, trying to validate this app package ...{COLOR_RESET}")
+        if not options.device_serial:
+            identify_device_serial(options)
+        if not options.apk_path or not options.property_files:
+            raise AttributeError("Missing required arguments: apk_path or property_files")
+        if not options.apk_path.endswith(('.apk', '.hap')):
+            print(f"Warning: {options.apk_path} may not be a valid apk or hap file; attempting to validate as app package...")
             sanitize_app_package_name(options)
 
 
@@ -205,36 +175,19 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 
 .. code-block:: python
     
-  class Setting:
-    """`Setting` is a Python DataClass
-    """
-    apk_path: str
-    device_serial: str = None
-    output_dir:str ="output"
-    is_emulator: bool =True     #True for emulators, False for real devices.
-    policy_name: str = DEFAULT_POLICY
-    random_input: bool =True
-    script_path: str=None
-    event_interval: int= DEFAULT_EVENT_INTERVAL
-    timeout: int = DEFAULT_TIMEOUT
-    event_count: int= DEFAULT_EVENT_COUNT
-    cv_mode=None
-    debug_mode: bool=False
-    keep_app:bool=None
-    keep_env=None
-    profiling_method=None
-    grant_perm: bool=True
-    send_document: bool=True
-    enable_accessibility_hard=None
-    master=None
-    humanoid=None
-    ignore_ad=None
-    replay_output=None
-    number_of_events_that_restart_app:int =100
-    run_initial_rules_after_every_mutation=True
-    is_harmonyos:bool=False
-    generate_utg:bool=False
-    is_package:bool=False
+    class Setting:
+        apk_path: str
+        device_serial: str = None
+        output_dir: str = "output"
+        is_emulator: bool = True
+        policy_name: str = "default_policy"
+        event_count: int = 100
+        keep_app: bool = None
+        keep_env = None
+        number_of_events_that_restart_app: int = 100
+        is_harmonyos: bool = False
+        generate_utg: bool = False
+        is_package: bool = False
 
 - `load_pdl_driver` 函数：
     - 根据目标平台（Android 或 HarmonyOS）加载相应的 PDL 驱动。
@@ -244,10 +197,7 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 
 .. code-block:: python
     
-    def load_pdl_driver(settings: "Setting"):
-        """Load the pdl (property description language) driver according to the target mobile platform
-            (e.g., Android, HarmonyOS).
-        """
+    def load_pdl_driver(settings):
         if settings.is_harmonyos:
             from kea.harmonyos_pdl_driver import HarmonyOS_PDL_Driver
             return HarmonyOS_PDL_Driver(serial=settings.device_serial)
@@ -263,42 +213,10 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 
 .. code-block:: python
      
-    def start_kea(kea:"Kea", settings:"Setting" = None):
+    def start_kea(kea, settings):
 
         # droidbot is used as the data generator of Kea
-        droidbot = DroidBot(    
-            app_path=settings.apk_path,
-            device_serial=settings.device_serial,
-            is_emulator=settings.is_emulator,
-            output_dir=settings.output_dir,
-            env_policy = None,
-            policy_name=settings.policy_name,
-            random_input=settings.random_input,
-            script_path=settings.script_path,
-            event_interval=settings.event_interval,
-            timeout=settings.timeout,
-            event_count=settings.event_count,
-            cv_mode=settings.cv_mode,
-            debug_mode=settings.debug_mode,
-            keep_app=settings.keep_app,
-            keep_env=settings.keep_env,
-            profiling_method=settings.profiling_method,
-            grant_perm=settings.grant_perm,
-            send_document=settings.send_document,
-            enable_accessibility_hard=settings.enable_accessibility_hard,
-            master=settings.master,
-            humanoid=settings.humanoid,
-            ignore_ad=settings.ignore_ad,
-            replay_output=settings.replay_output,
-            kea=kea,
-            number_of_events_that_restart_app=settings.number_of_events_that_restart_app,
-            run_initial_rules_after_every_mutation=settings.run_initial_rules_after_every_mutation,
-            is_harmonyos=settings.is_harmonyos,
-            is_package=settings.is_package,
-            settings=settings,
-            generate_utg=settings.generate_utg
-        )
-
+        droidbot = DroidBot(...)
         kea._pdl_driver.set_droidbot(droidbot)  
         droidbot.start()
 
@@ -311,34 +229,10 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 .. code-block:: python
      
     def main():
-        """the main entry of Kea.
-        """
-        # parse the args
         options = parse_args()
-
-        # setup the setting
-        settings =  Setting(apk_path=options.apk_path,
-                        device_serial=options.device_serial,
-                        output_dir=options.output_dir,
-                        timeout=options.timeout,
-                        policy_name=options.policy,
-                        number_of_events_that_restart_app=options.number_of_events_that_restart_app,  # tingsu: do we need a better name?
-                        debug_mode=options.debug_mode,
-                        keep_app=options.keep_app,
-                        is_harmonyos=options.is_harmonyos,
-                        grant_perm=options.grant_perm,
-                        is_emulator=options.is_emulator,
-                        generate_utg=options.generate_utg
-                        )
-        
-        # load the pdl driver for Android/HarmonyOS
+        settings = Setting(...)
         driver = load_pdl_driver(settings)
         Kea.set_pdl_driver(driver)
-        # load the app properties to be tested
         Kea.load_app_properties(options.property_files)
-
-        # create Kea
         kea = Kea()
-        print(f"INFO: All Test cases: {kea._KeaTest_DB}") 
-        # start Kea
-        start_kea(kea, settings) 
+        start_kea(kea, settings)
