@@ -11,3 +11,6 @@
 我们使用 python coverage 运行 kea 进行覆盖率分析。
 
 其结果如下（正在跑实验）
+
+.. image:: ../../images/coverage.png
+    :align: center
