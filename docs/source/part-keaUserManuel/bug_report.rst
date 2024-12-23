@@ -3,7 +3,7 @@
 缺陷报告阅读指南
 =================
 
-.. image:: ../../images/BugReport.png
+.. image:: ../../images/bug_report.png
             :align: center
 
 |
