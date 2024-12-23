@@ -35,7 +35,7 @@
 使用命令行配置安卓环境
 -------------------------------------------------------------------
 
-**Step 1: Install and set up android sdk on your PC**
+**步骤1：在主机上安装并配置Android SDK环境**
 
 :doc:`androidSDK/Linux`
 
@@ -43,7 +43,7 @@
 
 :doc:`androidSDK/Mac`
 
-**Setp 2: Create and run an emulator**
+**步骤2：创建并运行虚拟机**
 
 :doc:`androidSDK/emulator`
 
