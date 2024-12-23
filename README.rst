@@ -3,6 +3,11 @@ Kea 技术文档
 
 https://kea-technic-docs.readthedocs.io/zh-cn/latest/
 
+系统测试覆盖率报告
+==================================
+
+https://xixianliang.github.io/kea-technic-docs/
+
 开发者指南
 ======================================
 
