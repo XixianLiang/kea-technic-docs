@@ -1,3 +1,5 @@
+.. _main_path:
+
 GuidedPolicy
 ================
 
@@ -11,7 +13,6 @@ GuidedPolicy所包含的主要方法有：
 - 在主路径上获取下一个执行的事件。
 - 离开主路径探索应用深层状态过程的主要调控。
 - 从主路径上获取能引导应用回到主路径上的事件。
-
 
 
 主路径引导策略的介绍
@@ -226,6 +227,9 @@ GuidedPolicy类中的成员方法
    根据当前应用状态判断应当生成事件的方法。如果在应用外则返回应用；如果在初始阶段则运行初始化函数；如果在执行主路径则返回主路径事件；
    如果在探索应用则返回继续探索所需事件。
 
+   :返回:
+      - 一个生成的事件。
+
    .. code-block:: python
 
         def generate_event(self):
@@ -254,6 +258,9 @@ GuidedPolicy类中的成员方法
    
     获取主路径上应该执行的下一个事件。
 
+    :返回:
+       - 主路径上的下一个事件。
+
     .. code-block:: python
 
         def get_next_event_from_main_path(self):
@@ -273,6 +280,9 @@ GuidedPolicy类中的成员方法
 1. **mutate_the_main_path**
    
    根据当前事件执行次数判断是继续生成随机事件还是回到主路径上。
+
+   :返回:
+      - 探索过后生成的事件。
 
    .. code-block:: python
 
@@ -307,6 +317,9 @@ GuidedPolicy类中的成员方法
 
     生成随机事件探索应用。
 
+    :返回:
+        - 随机生成的事件。
+
     .. code-block:: python
 
         def generate_random_event_based_on_current_state(self):
@@ -324,6 +337,9 @@ GuidedPolicy类中的成员方法
 3. **stop_mutation**
    
     停止探索过程，并重置参数。
+
+    :返回:
+        - 重启或者重装应用事件。
 
     .. code-block:: python
 
@@ -345,6 +361,9 @@ GuidedPolicy类中的成员方法
 1. **get_event_from_main_path**
    
    根据当前是否已经回到主路径上，如果已经回到则执行完后续主路径事件，如果没回到主路径上则根据主路径事件序列倒叙尝试返回主路径。
+
+   :返回:
+        - 主路径事件字符串。
 
    .. code-block:: python
 
@@ -373,6 +392,12 @@ GuidedPolicy类中的成员方法
 2. **get_ui_element_dict**
 
     获取主路径上单个事件所操作的组件的相关信息。
+
+    :参数:
+        - ui_element_str: 组件信息字符串
+    
+    :返回:
+        - 字典形式的该组件相关信息。
 
     .. code-block:: python
 

@@ -10,4 +10,11 @@
 
 我们使用 python coverage 运行 kea 进行覆盖率分析。
 
-其结果如下（正在跑实验）
+其结果如下
+
+.. figure:: ../../images/coverage.png
+    :align: center
+    
+    kea覆盖率分析整体数据
+
+｜ 覆盖率的详细报告内容可 `点击查看 <https://xixianliang.github.io/kea-technic-docs/>`_。
