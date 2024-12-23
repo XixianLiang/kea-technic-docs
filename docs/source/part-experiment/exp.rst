@@ -17,4 +17,4 @@
     
     kea覆盖率分析整体数据
 
-｜ 覆盖率的详细报告内容可 `点击查看 <https://github.com/XixianLiang/kea-technic-docs/tree/main/docs/CoverReport/index.html>`_。
+｜ 覆盖率的详细报告内容可 `点击查看 <https://xixianliang.github.io/kea-technic-docs/>`_。
