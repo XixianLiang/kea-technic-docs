@@ -53,7 +53,7 @@
    
    - 使用 ``Kea.load_app_properties`` 方法加载需要测试的应用属性，这些属性定义了要测试的应用行为。
 
-9.  **启动`Kea`**
+9. **启动`Kea`**
     
    - 调用 ``start_kea`` 函数，传入 ``Kea`` 实例和 ``Setting`` 实例，开始执行自动化测试流程。
    - ``start_kea`` 函数会初始化 ``DroidBot`` ，它是 ``Kea`` 的数据生成器，并启动测试。
@@ -65,7 +65,7 @@ Kea 使用 `argparse` 库来解析命令行参数。以下是主要的命令行�
 
 - ``-f`` 或 ``--property_files``: 指定要测试的应用属性文件。
 - ``-d`` 或 ``--device_serial``: 指定目标设备的序列号。
-- ``-a`` 或 ``--apk``: 指定目标 APK 文件的路径。
+- ``-a`` 或 ``--apk``: 指定待测应用安装包文件的路径，或待测应用的包名。
 - ``-o`` 或 ``--output``: 指定输出目录，默认为 "output"。
 - ``-p`` 或 ``--policy``: 指定输入事件生成策略，默认为 "random"。
 - ``-t`` 或 ``--timeout``: 指定超时时间（秒），默认为预设值。
@@ -99,7 +99,7 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
 
 1. 解析命令行参数和 YAML 配置文件。
 2. 设置参数对象 `Setting`。
-3. 根据目标平台加载相应的 PDL（属性描述语言）驱动。
+3. 根据目标平台加载相应的 PDL 驱动。
 4. 创建 Kea 实例并加载应用属性。
 5. 启动 Kea 进行测试。
 
@@ -161,9 +161,8 @@ Kea 使用 `dataclass` 定义了一个名为 `Setting` 的参数对象，用于�
         if not options.device_serial:
             identify_device_serial(options)
         if not options.apk_path or not options.property_files:
-            raise AttributeError("Missing required arguments: apk_path or property_files")
+            raise Error
         if not options.apk_path.endswith(('.apk', '.hap')):
-            print(f"Warning: {options.apk_path} may not be a valid apk or hap file; attempting to validate as app package...")
             sanitize_app_package_name(options)
 
 
