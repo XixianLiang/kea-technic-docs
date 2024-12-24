@@ -62,7 +62,7 @@
 
         return accept
 
-@precondition前提条件指定了属性何时可以被执行。一个属性可以有多个前提条件，每个前提条件由 `@precondition` 指定。其中，
+@precondition前提条件指定了性质何时可以被执行。一个性质可以有多个前提条件，每个前提条件由 `@precondition` 指定。其中，
 PRECONDITIONS_MARKER为一个常量。
 
 :参数:

@@ -1,4 +1,4 @@
-为 HarmonyOS 编写属性
+为 HarmonyOS 编写性质
 =================================
 
 HarmonyOS 的 UI 控件查看工具：uiviewer教程

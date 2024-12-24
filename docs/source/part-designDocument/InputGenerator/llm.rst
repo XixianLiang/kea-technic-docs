@@ -10,7 +10,7 @@ LLMPolicy所包含的主要方法有：
 
 - 根据当前状态生成一个LLM辅助的随机事件。
 - 根据配置重启或重新安装应用。
-- 在满足预条件的情况下，根据随机性决定是否检查属性。
+- 在满足预条件的情况下，根据随机性决定是否检查性质。
 
 LLM辅助事件生成策略的介绍
 --------------------------
@@ -217,7 +217,7 @@ LLMPolicy类中的数据结构
 
 4. **restart_app_after_check_property**
    
-   - ``restart_app_after_check_property`` 布尔型，指示在检查属性后是否重启应用。
+   - ``restart_app_after_check_property`` 布尔型，指示在检查性质后是否重启应用。
 
 5. **_action_history**
    

@@ -3,7 +3,7 @@
 
 检查环境
 --------------------------------------
-Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 HarmonyOS。  
+Kea 是一个基于性质的移动应用测试框架，目前支持 Android 和 HarmonyOS。  
 
 请确保你拥有一台移动设备，并在你的电脑上安装了 Android/HarmonyOS 命令行工具。检查 ``adb`` （Android）或 ``hdc`` （HarmonyOS）是否可用。  
 
@@ -29,7 +29,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 启动你的设备或 Android 模拟器。在终端中输入 ``adb devices`` 以确保它可用。
 
-我们将使用 `weditor <https://github.com/alibaba/web-editor>`_ 来检查 Android 元素并编写属性。
+我们将使用 `weditor <https://github.com/alibaba/web-editor>`_ 来检查 Android 元素并编写性质。
 
 **1. 启动 weditor 并安装你的应用。**
 
@@ -69,7 +69,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 你可以点击一个元素并检查其属性。
 
-**3. 编写你的第一个属性**
+**3. 编写你的第一个性质**
 
 我们在这个应用中有一个简单的功能需要检查：**旋转后搜索输入框不应被清空。**
 
@@ -85,7 +85,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 我们需要特定于控件的属性来定位一个控件。最常用的唯一属性是 **resourceId**。  
 如果没有 **resourceId**，**text** 或 **className** 也可以，但大多数情况下它们不是唯一的，会导致错误。
 
-因此，为了避免 kea 进入错误状态，你可以使用多个属性在选择器中定位一个控件，并使用多个控件定位一个页面。
+因此，为了避免 kea 进入错误状态，你可以使用多个性质在选择器中定位一个控件，并使用多个控件定位一个页面。
 
 **经过检查，我们知道搜索输入框的 resourceId。我们可以用以下命令来定位它。**
 
@@ -93,7 +93,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 .. note:: 
 
-    你可能会对 ``d(**选择器)`` 脚本感到困惑。这是 kea 的 PDL（Property Description Language, 属性描述语言）  
+    你可能会对 ``d(**选择器)`` 脚本感到困惑。这是 kea 的 PDL（Property Description Language, 性质描述语言）  
     用于与 AUT（被测应用）交互。你可以阅读 :ref:`pdl_api` 以获取详细信息。
 
 **要检查这个控件是否存在，我们调用 ``exists``。**
@@ -114,9 +114,9 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 ``assert d(resourceId="it.feio.android.omninotes.alpha:id/search_src_text").exists()``
 
-恭喜！你已经编写了你的第一个属性！
+恭喜！你已经编写了你的第一个性质！
 
-**4. 使用 Kea API 封装你的属性**
+**4. 使用 Kea API 封装你的性质**
 
 在 kea 的根目录下创建一个 Python 文件 **my_prop.py**。
 
@@ -134,7 +134,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
             assert d(resourceId="it.feio.android.omninotes.alpha:id/search_src_text").exists()
     
 
-启动 kea 并检查你的属性  
+启动 kea 并检查你的性质  
 --------------------------------------
 
 通过以下命令启动 kea。
