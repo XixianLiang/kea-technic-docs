@@ -104,17 +104,19 @@ WSL 常见问题
 
 **3. CPU 硬件加速问题**
 
-This user doesn't have permissions to use KVM (/dev/kvm), ERROR: x86 emulation currently requires hardware acceleration!
+.. error:: 
+    
+    This user doesn't have permissions to use KVM (/dev/kvm), ERROR: x86 emulation currently requires hardware acceleration!
 
-    .. image:: ../../../images/issues1.png
-        :align: center
+.. image:: ../../../images/issues1.png
+    :align: center
 
-    |
+|
 
-    请遵循 `此链接 <https://stackoverflow.com/questions/37300811/android-studio-dev-kvm-device-permission-denied>`_ 中的第一个解决方案。
-    然后，重新登录。
+请遵循 `Stack Overflow - Android Studio: /dev/kvm device permission denied <https://stackoverflow.com/questions/37300811/android-studio-dev-kvm-device-permission-denied>`_ 中的第一个解决方案。
+然后，注销并重新登录Linux。
 
-    .. code-block:: bash
+.. code-block:: bash
 
-        sudo adduser $USER kvm
-        sudo chown $USER -R /dev/kvm
+    sudo adduser $USER kvm
+    sudo chown $USER -R /dev/kvm

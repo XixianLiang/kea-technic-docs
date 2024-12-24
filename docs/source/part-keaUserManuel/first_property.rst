@@ -3,13 +3,12 @@
 
 检查环境
 --------------------------------------
-Kea 是一个基于性质的移动应用测试框架，目前支持 Android 和 HarmonyOS。  
 
-请确保你拥有一台移动设备，并在你的电脑上安装了 Android/HarmonyOS 命令行工具。检查 ``adb`` （Android）或 ``hdc`` （HarmonyOS）是否可用。  
+Kea 是一个基于性质的移动应用测试框架，目前支持 Android 和 HarmonyOS。请确保你拥有一台移动设备，并在你的电脑上安装了 Android/HarmonyOS 命令行工具。检查 ``adb`` （Android）或 ``hdc`` （HarmonyOS）是否可用。  
 
-如果你没有设备，可以通过模拟器尝试使用 Kea。  
+- 如果你没有真机，可以通过模拟器使用 Kea。
 
-请确保你已安装 ``python 3.9+``。  
+- 请确保你已安装 ``python 3.9+``。  
 
 
 安装
