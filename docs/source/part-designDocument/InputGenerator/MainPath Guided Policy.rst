@@ -319,13 +319,12 @@ GuidedPolicy类中的成员方法
             return event
 
 2. **generate_random_event_based_on_current_state**
-
-    生成随机事件探索应用。
-
-    :参数: - 无
-
-    :返回:
-        - 随机生成的事件。
+   
+   生成随机事件探索应用。
+   
+   :参数: - 无
+   
+   :返回: - 随机生成的事件。
 
     .. code-block:: python
 
@@ -343,12 +342,11 @@ GuidedPolicy类中的成员方法
         
 3. **stop_mutation**
    
-    停止探索过程，并重置参数。
-
-    :参数: - 无
-
-    :返回:
-        - 重启或者重装应用事件。
+   停止探索过程，并重置参数。
+   
+   :参数: - 无
+   
+   :返回: - 重启或者重装应用事件。
 
     .. code-block:: python
 
@@ -401,14 +399,13 @@ GuidedPolicy类中的成员方法
             return None
 
 2. **get_ui_element_dict**
-
-    获取主路径上单个事件所操作的组件的相关信息。
-
-    :参数:
-        - ui_element_str: 组件信息字符串
-    
-    :返回:
-        - 字典形式的该组件相关信息。
+   
+   获取主路径上单个事件所操作的组件的相关信息。
+   
+   :参数:
+      - ui_element_str: 组件信息字符串
+   
+   :返回: - 字典形式的该组件相关信息。
 
     .. code-block:: python
 
