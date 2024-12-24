@@ -2,45 +2,45 @@
 
 # -- Project information
 
-project = 'Kea'
-copyright = '2024, Yiheng Xiong, Ting Su, Jue Wang, Jingling Sun, Geguang Pu, Zhendong Su'
-author = 'Yiheng Xiong, Ting Su, Jue Wang, Jingling Sun, Geguang Pu, Zhendong Su'
+project = "Kea"
+copyright = "2024, ESCU-SE-lab"
+author = "梁锡贤、沈祥臣、马搏"
 
-release = '1.0.1'
-version = '1.0'
+release = "2.0.3"
+version = "1.0"
 
 # -- General configuration
 
 extensions = [
-    'sphinx.ext.duration',
-    'sphinx.ext.doctest',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.intersphinx'
+    "sphinx.ext.duration",
+    "sphinx.ext.doctest",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.intersphinx",
 ]
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'sphinx': ('https://www.sphinx-doc.org/en/master/', None),
+    "python": ("https://docs.python.org/3/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
 }
-intersphinx_disabled_domains = ['std']
+intersphinx_disabled_domains = ["std"]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # -- Options for HTML output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 
 # -- Options for EPUB output
-epub_show_urls = 'footnote'
+epub_show_urls = "footnote"
 
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
-latex_engine = 'xelatex'
+latex_engine = "xelatex"
 latex_elements = {
-    'papersize': 'a4paper',
-    'pointsize': '11pt',
-    'preamble': r'''
+    "papersize": "a4paper",
+    "pointsize": "11pt",
+    "preamble": r"""
 \usepackage{xeCJK}
 \setCJKmainfont[BoldFont=STZhongsong, ItalicFont=STKaiti]{STSong}
 \setCJKsansfont[BoldFont=STHeiti]{STXihei}
@@ -52,5 +52,5 @@ latex_elements = {
 \setcounter{tocdepth}{3}
 \renewcommand\familydefault{\ttdefault}
 \renewcommand\CJKfamilydefault{\CJKrmdefault}
-'''
+""",
 }

@@ -47,6 +47,5 @@ Contents
 .. toctree::
    :caption: 实验与结果
 
-   part-experiment/exp
    part-experiment/trophies
-   part-experiment/PDL
+   part-experiment/exp

@@ -1,6 +1,11 @@
 KeaTestElements
 =========================
 
+本部分旨在解释 Kea 的中的核心控制器类 Kea的设计与实现。
+
+功能设计与实现
+-----------------------
+
 KeaTestElements是Kea运行时存储用户自定义性质的数据结构，与用户继承并自定义的keaTest一一对应。
 在kea启动时，keaTestElements会读取每个用户自定义的keaTest，并重新组织为方便kea进行读取的数据结构。
 具体的转换过程可参考装饰器一章：:ref:`decorators-keatestelements`。

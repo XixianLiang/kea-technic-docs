@@ -99,7 +99,6 @@ DeviceHM是一个鸿蒙设备的抽象，提供设备层面的一些操作接口
     "get_current_activity_stack", "", "current_ability_stack:List[str]", 获取设备的Ability栈
     "install_app", "app:AppHM", "", 安装一个应用
     "uninstall_app", "app:AppHM", "", 卸载一个应用
-    "parse_main_activity_from_dumpsys_lines", "fp:IO", "main_ability:str", 通过dumpsys的结果解析应用的MainAbility
     "push_file", "local_file:Path, remote_dir:Path", "", 推送一个文件到设备上
     "pull_file", "remote_file:Path, local_file:Path", "", 从设备拉取一个文件
     "take_screenshot", "", "", 对设备进行截图
