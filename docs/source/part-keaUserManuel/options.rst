@@ -126,4 +126,4 @@ property, properties, file, files: 这些参数对应 -f，用于指定包含性
 这种策略会随机选择另一个性质作为新目标。
 此外，当多个性质的前提条件满足时，这种策略会随机选择一个性质进行检查。
 
-你可以在 :ref:`kea_mechanism` 中查看动画以获取详细信息。
+你可以在 :ref:`kea_mechanism` 中查看详细信息。
