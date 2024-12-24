@@ -1,7 +1,7 @@
-Kea工具表现
+Kea工具应用效果简介
 ======================
 
-Kea在8个开源工具中找到了25个bug，这是Kea找到的bug清单。
+Kea在8个开源应用中找到了25个此前未知的功能缺陷。下面是这些功能缺陷清单：
 
 * OmniNotes: 
     `#942 https://github.com/federicoiosue/Omni-Notes/issues/942 <https://github.com/federicoiosue/Omni-Notes/issues/942>`_
