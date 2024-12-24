@@ -43,7 +43,7 @@
 
 :doc:`androidSDK/Mac`
 
-**步骤2：创建并运行虚拟机**
+**步骤2：创建并运行模拟器**
 
 :doc:`androidSDK/emulator`
 
