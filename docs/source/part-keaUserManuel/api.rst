@@ -64,9 +64,7 @@
 选择器
 ---------------------
 
-选择器是一种非常方便的机制，用于在用户界面中识别特定的组件。
-
-选择器支持以下参数：
+选择器用于在用户界面中识别特定的组件，其支持以下参数：
 
 *  ``text``, ``textContains``, ``textMatches``, ``textStartsWith``
 *  ``className``, ``classNameMatches``

@@ -9,7 +9,7 @@
 
    |
 
-   | 在这里，你可以使用 ``wget`` 下载工具，如果你愿意，也可以直接下载。
+   | 你可以在命令行中使用 ``wget`` 下载工具下载压缩包，也可以从浏览器中下载并自行解压。
 
    你可以从上述 `Android Developer <https://developer.android.com/studio>`_ 网站复制下载链接。
    然后使用以下命令。
