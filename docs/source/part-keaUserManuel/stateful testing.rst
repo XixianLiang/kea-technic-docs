@@ -76,10 +76,10 @@ Bundle 类包含以下函数：
 首先，你可以定义一个 ``create_file_should_exist`` 性质。该性质的实现步骤如下：1. 返回到主目录。 2.创建一个文件。 3.检查新文件是否存在。
 这个性质可以确保在创建文件后，文件确实存在于预期的位置。
 
-.. image:: ../../images/CreateFile.png
-            :align: center
+.. figure:: ../../images/CreateFile.png
+        :align: center
 
-|
+        创建文件夹截图
 
 .. code-block:: Python
 
@@ -101,10 +101,10 @@ Bundle 类包含以下函数：
 
 接下来, 你可以定义一个 ``change_filename_should_follow`` 性质。 该性质的实现步骤如下：返回到主目录，随机选择一个文件，改变它的名称，并检查原来名称的文件是否消失并且新名称的文件是否存在。
 
-.. image:: ../../images/RenameFile.png
-            :align: center
+..  figure:: ../../images/RenameFile.png
+        :align: center
 
-|
+        重命名文件夹截图
 
 .. code-block:: Python
 
@@ -136,10 +136,10 @@ Bundle 类包含以下函数：
 
 最后, 你可以定义一个 ``del_file_should_disappear`` 性质。返回到主目录，删除一个文件，并检查该文件是否存在。
 
-.. image:: ../../images/DelFile.png
-            :align: center
+..  figure:: ../../images/DelFile.png
+        :align: center
 
-|
+        删除文件夹截图
 
 .. code-block:: Python
 
