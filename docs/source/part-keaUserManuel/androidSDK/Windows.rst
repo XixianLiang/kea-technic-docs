@@ -19,7 +19,7 @@
 
 2. 配置相关环境。
 
-   安装 Java。（如果你之前已经安装并配置过，你应该检查你的 JDK 是否与命令行工具匹配，然后跳过以下关于 Java 的步骤）
+   安装 Java。（如果你之前已经安装并配置过Java，你需要检查你的 JDK 是否与命令行工具适配。如果版本适配，你可以跳过以下关于 Java 环境配置的步骤）
 
    访问 `Oracle JDK <https://www.oracle.com/java/technologies/downloads/#jdk21-windows>`_ 的官方网站，选择适合 Windows 的版本并下载。
 
@@ -72,4 +72,4 @@
 
    在这里，你应该会看到信息显示 ``All SDK package licenses accepted``。
 
-   sdkmanager 的常用命令。你可以从 `此链接 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。
+   你可以从 `sdkmanager 的常用命令 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。

@@ -23,9 +23,9 @@
 
 2. 配置相关环境。
 
-   安装 Java。（如果你之前已经安装并配置过，你应该检查你的 JDK 是否与命令行工具匹配，然后跳过以下关于 Java 的步骤）
+   安装 Java。（如果你之前已经安装并配置过Java，你需要检查你的 JDK 是否与命令行工具适配。如果版本适配，你可以跳过以下关于 Java 环境配置的步骤）
 
-   | 在这里，你可以使用 ``JDK-17`` 来匹配当前可用的最新工具。
+   | 我们使用 ``JDK-17`` 来运行安卓模拟器。。
 
    .. code-block:: bash
 
@@ -48,7 +48,7 @@
 
    | 确保 ``PATH`` 配置与你存储相关工具的路径匹配。
 
-   最后，重新加载 ``.bashrc`` 文件，使更改立即应用于当前终端会话。
+   最后，重新装载 ``.bashrc`` 文件，使更改立即应用于当前终端会话。
 
    .. code-block:: bash
 
@@ -61,14 +61,14 @@
        sdkmanager --list
        sdkmanager --licenses
 
-   如果你获得的信息类似于以下内容，则安装成功。
+   如果你获得如下信息，则安装成功。
 
    .. image::  ../../../images/sdkmanager-licenses.png
        :align: center
 
    |
 
-   sdkmanager 的常用命令。你可以从 `此链接 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。
+   你可以从 `sdkmanager 的常用命令 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。
 
 WSL 常见问题
 --------------------------------------

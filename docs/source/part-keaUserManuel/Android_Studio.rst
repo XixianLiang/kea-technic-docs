@@ -21,7 +21,7 @@
 MacOS 和 Linux
 -------------------------------
 
-在你的电脑上安装了 Android Studio。你需要做的是将 Android sdk 其添加至 PATH 环境变量，让其在终端中可用。
+在你的电脑上安装了 Android Studio。你需要做的是将 Android sdk 其添加至 PATH 环境变量，让其在终端中生效。
 
 有关详细信息，请参见 `Android Studio 文档：环境变量 <https://developer.android.com/tools/variables>`_。
 
@@ -40,7 +40,7 @@ MacOS 和 Linux
 .. code-block:: bash
 
     export ANDROID_HOME="/usr/.../Library/Android/sdk/"
-    # 导出库中的所有命令。
+    # export 安卓安装目录中的所有命令。
     export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest:$ANDROID_HOME/platform-tools:$PATH"
 
 
@@ -53,7 +53,7 @@ MacOS 和 Linux
 Windows
 ---------------
 
-在你的电脑上安装了 Android Studio。你需要做的是导出 PATH 变量，以便在终端中可用。
+在你的电脑上安装了 Android Studio。你需要做的是将 Android sdk 其添加至 PATH 环境变量，让其在终端中生效。
 
 如果你使用的是 zsh 或 bash，请使用 ``EXPORT`` 命令设置 ``ANDROID_HOME`` 环境变量。``ANDROID_HOME`` 
 环境变量应指向你的 SDK 安装路径。默认路径是 ``C:\Users\usr_name\AppData\Local\Android\Sdk``。你可以通过 :guilabel:`文件` -> :guilabel:`设置` -> :guilabel:`语言与框架` -> :guilabel:`Android SDK` 查看你的安装路径。
@@ -65,7 +65,7 @@ Windows
 
     Android Studio 中 Android SDK 路径的示例
 
-然后，将以下路径添加到 PATH 变量中。请参见 `如何添加到 Windows PATH 环境变量 <https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/>`_。
+然后，将以下路径添加到 PATH 变量中。请参见 `Windows系统中如何添加 PATH 环境变量 <https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/>`_。
 
 .. code-block:: 
 

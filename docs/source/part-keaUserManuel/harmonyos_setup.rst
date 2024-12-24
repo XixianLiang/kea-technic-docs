@@ -52,7 +52,7 @@ MacOS 和 Linux
 Windows 系统
 -----------------------------
 
-在你的电脑上安装了 DevEco Studio。你需要做的是导出 PATH 变量，以便在终端中可用。
+在你的电脑上安装了 DevEco Studio。你需要做的是将其工具目录添加至 PATH 变量，以便令SDK命令后工具在终端中生效。
 
 如果你使用的是 zsh 或 bash，请使用 ``EXPORT`` 命令设置 ``HARMONY_SDK_HOME`` 环境变量。``HARMONY_SDK_HOMEE`` 
 环境变量应指向你的 SDK 安装路径。默认路径是 ``C:\Users\usr_name\AppData\Local\OpenHarmony\Sdk``。你可以通过 :guilabel:`File` -> :guilabel:`Settings` -> :guilabel:`OpenHarmony SDK` -> :guilabel:`Edit` 查看你的安装路径。
@@ -62,7 +62,7 @@ Windows 系统
 
     DevEco Studio 中 HamonyOS SDK 路径的示例
 
-然后，将以下路径添加到 PATH 变量中。请参见 `如何添加到 Windows PATH 环境变量 <https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/>`_。
+然后，将以下路径添加到 PATH 变量中。请参见 `Windows 系统中如何添加 PATH 环境变量 <https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/>`_。
 
 .. code-block:: bash
 
