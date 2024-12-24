@@ -1,15 +1,15 @@
-编写第一个property
+编写第一个性质
 ======================================
 
 检查环境
 --------------------------------------
 Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 HarmonyOS。  
 
-请确保您拥有一台移动设备，并在您的电脑上安装了 Android/HarmonyOS 命令行工具。检查 ``adb`` （Android）或 ``hdc`` （HarmonyOS）是否可用。  
+请确保你拥有一台移动设备，并在你的电脑上安装了 Android/HarmonyOS 命令行工具。检查 ``adb`` （Android）或 ``hdc`` （HarmonyOS）是否可用。  
 
-如果您没有设备，可以通过模拟器尝试使用 Kea。  
+如果你没有设备，可以通过模拟器尝试使用 Kea。  
 
-请确保您已安装 ``python 3.9+``。  
+请确保你已安装 ``python 3.9+``。  
 
 
 安装
@@ -24,21 +24,21 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 输入 ``kea -h`` 以检查 Kea 是否已成功安装。
 
-编写第一个property(安卓)
+编写第一个性质(安卓)
 --------------------------------------
 
-启动您的设备或 Android 模拟器。在终端中输入 ``adb devices`` 以确保它可用。
+启动你的设备或 Android 模拟器。在终端中输入 ``adb devices`` 以确保它可用。
 
 我们将使用 `weditor <https://github.com/alibaba/web-editor>`_ 来检查 Android 元素并编写属性。
 
-**1. 启动 weditor 并安装您的应用。**
+**1. 启动 weditor 并安装你的应用。**
 
 .. code-block:: bash 
 
     pip install weditor==0.7.3
     python -m weditor
 
-上述命令将在您的电脑上安装 weditor 并启动它。它提供了一个主机服务器（默认：http://localhost:17310）。您可以在网页浏览器中访问它。
+上述命令将在你的电脑上安装 weditor 并启动它。它提供了一个主机服务器（默认：http://localhost:17310）。你可以在网页浏览器中访问它。
 
 .. figure:: ../../images/weditor_home.png
     :align: center
@@ -64,16 +64,16 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
     从 weditor Dump hierachy
 
-连接到 weditor 后，您可以点击 :guilabel:`Dump hierachy` 来刷新元素（即Dump hierachy），每当您的屏幕发生变化时。  
-或者，您可以启用自动Dump hierachy，以避免手动刷新元素。
+连接到 weditor 后，你可以点击 :guilabel:`Dump hierachy` 来刷新元素（即Dump hierachy），每当你的屏幕发生变化时。  
+或者，你可以启用自动Dump hierachy，以避免手动刷新元素。
 
-您可以点击一个元素并检查其属性。
+你可以点击一个元素并检查其属性。
 
-**3. 编写您的第一个属性**
+**3. 编写你的第一个属性**
 
 我们在这个应用中有一个简单的功能需要检查：**旋转后搜索输入框不应被清空。**
 
-现在，让我们编写前置条件。这应该是功能开始时的唯一特征。我们想检查搜索输入框，所以让我们先移动到搜索功能。通过点击 :guilabel:`搜索` 按钮，您可以进入搜索编辑页面。显然，这个页面的唯一特征应该是搜索输入框本身。
+现在，让我们编写前置条件。这应该是功能开始时的唯一特征。我们想检查搜索输入框，所以让我们先移动到搜索功能。通过点击 :guilabel:`搜索` 按钮，你可以进入搜索编辑页面。显然，这个页面的唯一特征应该是搜索输入框本身。
 
 **在 weditor 中Dump hierachy。点击搜索框以检查其属性。**
 
@@ -85,7 +85,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 我们需要特定于控件的属性来定位一个控件。最常用的唯一属性是 **resourceId**。  
 如果没有 **resourceId**，**text** 或 **className** 也可以，但大多数情况下它们不是唯一的，会导致错误。
 
-因此，为了避免 kea 进入错误状态，您可以使用多个属性在选择器中定位一个控件，并使用多个控件定位一个页面。
+因此，为了避免 kea 进入错误状态，你可以使用多个属性在选择器中定位一个控件，并使用多个控件定位一个页面。
 
 **经过检查，我们知道搜索输入框的 resourceId。我们可以用以下命令来定位它。**
 
@@ -93,16 +93,16 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 .. note:: 
 
-    您可能会对 ``d(**选择器)`` 脚本感到困惑。这是 kea 的 PDL（Property Description Language, 属性描述语言）  
-    用于与 AUT（被测应用）交互。您可以阅读 :ref:`pdl_api` 以获取详细信息。
+    你可能会对 ``d(**选择器)`` 脚本感到困惑。这是 kea 的 PDL（Property Description Language, 属性描述语言）  
+    用于与 AUT（被测应用）交互。你可以阅读 :ref:`pdl_api` 以获取详细信息。
 
 **要检查这个控件是否存在，我们调用 ``exists``。**
 
 ``d(resourceId="it.feio.android.omninotes.alpha:id/search_src_text").exists()``
 
 .. hint:: 
-    双击 weditor 中的控件。这将自动为您生成 **click** 的动作脚本。  
-    您可以参考它来编写自己的脚本。
+    双击 weditor 中的控件。这将自动为你生成 **click** 的动作脚本。  
+    你可以参考它来编写自己的脚本。
 
 **编写交互场景（即功能的作用）。**
 
@@ -114,9 +114,9 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
 ``assert d(resourceId="it.feio.android.omninotes.alpha:id/search_src_text").exists()``
 
-恭喜！您已经编写了您的第一个属性！
+恭喜！你已经编写了你的第一个属性！
 
-**4. 使用 Kea API 封装您的属性**
+**4. 使用 Kea API 封装你的属性**
 
 在 kea 的根目录下创建一个 Python 文件 **my_prop.py**。
 
@@ -134,7 +134,7 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
             assert d(resourceId="it.feio.android.omninotes.alpha:id/search_src_text").exists()
     
 
-启动 kea 并检查您的属性  
+启动 kea 并检查你的属性  
 --------------------------------------
 
 通过以下命令启动 kea。
@@ -143,4 +143,4 @@ Kea 是一个基于属性的移动应用测试框架，目前支持 Android 和 
 
     kea -f prop.py -a example/omninotes.apk -o output
 
-检查 ``output/bug_report.html`` 中的错误报告。您可以在本教程中学习如何阅读错误报告： :ref:`bug_report_tutorial`。
+检查 ``output/bug_report.html`` 中的错误报告。你可以在本教程中学习如何阅读错误报告： :ref:`bug_report_tutorial`。

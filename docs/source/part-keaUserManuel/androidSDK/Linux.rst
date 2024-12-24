@@ -2,16 +2,16 @@
 ========================================================
 
 1. 安装 Android 命令行工具。
-   前往 `Android Developer <https://developer.android.com/studio>`_ 并下载与您的操作系统匹配的工具。
+   前往 `Android Developer <https://developer.android.com/studio>`_ 并下载与你的操作系统匹配的工具。
 
    .. image::  ../../../images/android-command-line-tool.png
        :align: center
 
    |
 
-   | 在这里，您可以使用 ``wget`` 下载工具，如果您愿意，也可以直接下载。
+   | 在这里，你可以使用 ``wget`` 下载工具，如果你愿意，也可以直接下载。
 
-   您可以从上述 `Android Developer <https://developer.android.com/studio>`_ 网站复制下载链接。
+   你可以从上述 `Android Developer <https://developer.android.com/studio>`_ 网站复制下载链接。
    然后使用以下命令。
 
    .. code-block:: bash
@@ -23,15 +23,15 @@
 
 2. 配置相关环境。
 
-   安装 Java。（如果您之前已经安装并配置过，您应该检查您的 JDK 是否与命令行工具匹配，然后跳过以下关于 Java 的步骤）
+   安装 Java。（如果你之前已经安装并配置过，你应该检查你的 JDK 是否与命令行工具匹配，然后跳过以下关于 Java 的步骤）
 
-   | 在这里，您可以使用 ``JDK-17`` 来匹配当前可用的最新工具。
+   | 在这里，你可以使用 ``JDK-17`` 来匹配当前可用的最新工具。
 
    .. code-block:: bash
 
        sudo apt install openjdk-17-jdk
 
-   打开您的 ``.bashrc`` 文件。
+   打开你的 ``.bashrc`` 文件。
 
    .. code-block:: bash
 
@@ -46,7 +46,7 @@
        export ANDROID_HOME=$HOME/Android
        export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/tools/bin:$ANDROID_HOME/cmdline-tools/latest:$ANDROID_HOME/platform-tools:$PATH"
 
-   | 确保 ``PATH`` 配置与您存储相关工具的路径匹配。
+   | 确保 ``PATH`` 配置与你存储相关工具的路径匹配。
 
    最后，重新加载 ``.bashrc`` 文件，使更改立即应用于当前终端会话。
 
@@ -61,32 +61,32 @@
        sdkmanager --list
        sdkmanager --licenses
 
-   如果您获得的信息类似于以下内容，则安装成功。
+   如果你获得的信息类似于以下内容，则安装成功。
 
    .. image::  ../../../images/sdkmanager-licenses.png
        :align: center
 
    |
 
-   sdkmanager 的常用命令。您可以从 `此链接 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。
+   sdkmanager 的常用命令。你可以从 `此链接 <https://developer.android.com/tools/sdkmanager>`_ 了解更多。
 
 WSL 常见问题
 --------------------------------------
 
 **1. WSL 依赖项**
 
-请将您的 Windows 升级到 Win11，并使用 WSL 2。这将解决大多数 Win10 和 WSL 1 中的 WSL 问题。
+请将你的 Windows 升级到 Win11，并使用 WSL 2。这将解决大多数 Win10 和 WSL 1 中的 WSL 问题。
 
 **2. WSL PATH 设置**
 
 默认情况下，WSL 将共享 Windows 系统中的环境变量。有时这会导致错误的行为。
-您可能会发现您使用的实际可执行文件并不是您通过 ``which`` 命令找到的文件。此问题的根本原因是：WSL 中的 ``which`` 命令只能找到 WSL 的 PATH 中的可执行文件。但是，如果您在 Windows PATH 和 WSL PATH 中同时配置了一个可执行文件（例如 python3），而 Windows PATH 在 WSL PATH 之前设置（``PATH=$Windows_PATH:$WSL_PATH``）。那么您使用的实际可执行文件就是 Windows_PATH 中的文件。但您通过 ``which`` 找到的则是 WSL_PATH 中的文件。
+你可能会发现你使用的实际可执行文件并不是你通过 ``which`` 命令找到的文件。此问题的根本原因是：WSL 中的 ``which`` 命令只能找到 WSL 的 PATH 中的可执行文件。但是，如果你在 Windows PATH 和 WSL PATH 中同时配置了一个可执行文件（例如 python3），而 Windows PATH 在 WSL PATH 之前设置（``PATH=$Windows_PATH:$WSL_PATH``）。那么你使用的实际可执行文件就是 Windows_PATH 中的文件。但你通过 ``which`` 找到的则是 WSL_PATH 中的文件。
 
-要解决此问题，您可以按照以下建议操作：
+要解决此问题，你可以按照以下建议操作：
 
-- 在设置 PATH 时将您的环境 PATH 放在前面
+- 在设置 PATH 时将你的环境 PATH 放在前面
 
-    使用 ``PATH=New_PATH:$PATH`` 而不是 ``PATH=$PATH:New_PATH``。这是一个良好的习惯，可以优先考虑您的最新设置并确保其始终有效。
+    使用 ``PATH=New_PATH:$PATH`` 而不是 ``PATH=$PATH:New_PATH``。这是一个良好的习惯，可以优先考虑你的最新设置并确保其始终有效。
 
 - 禁用环境变量的共享
 

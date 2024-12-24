@@ -26,7 +26,7 @@
 
    在 DevEco Studio 中设置 SDK
 
-点击 :guilabel:`edit`。设置您的 SDK 路径并安装 OpenHarmony SDK 工具链。API 版本应为 12+（5.0+）。
+点击 :guilabel:`edit`。设置你的 SDK 路径并安装 OpenHarmony SDK 工具链。API 版本应为 12+（5.0+）。
 
 .. figure::  ../../images/DevEco-toolchains.jpg
    :align: center
@@ -80,4 +80,4 @@ Windows 系统
 根据此指南运行一个模拟器： `管理及运行模拟器 <https://developer.huawei.com/consumer/cn/doc/harmonyos-guides-V13/ide-emulator-management-V13>`_ 
 
 .. important::
-   在终端中运行 ``hdc list targets``。 您可以看到模拟器以一个环回地址套接字(127.0.0.1:port)的形式提供。
+   在终端中运行 ``hdc list targets``。 你可以看到模拟器以一个环回地址套接字(127.0.0.1:port)的形式提供。

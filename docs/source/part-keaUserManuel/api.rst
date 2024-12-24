@@ -12,7 +12,7 @@
 
    目前，kea的性质描述语言底层通过 `uiautomator2 <https://github.com/openatx/uiautomator2>`_ 作为交互工具，来进行与移动设备的交互。
 
-例如，要向应用程序发送点击事件，您可以使用以下代码：
+例如，要向应用程序发送点击事件，你可以使用以下代码：
 
 .. code-block:: Python
 
