@@ -3,7 +3,7 @@
 # -- Project information
 
 project = "Kea"
-copyright = "2024, ESCU-SE-lab"
+copyright = "2024, ECNU-SE-lab"
 author = "梁锡贤、沈祥臣、马搏"
 
 release = "2.0.3"
