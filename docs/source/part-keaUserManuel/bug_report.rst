@@ -3,10 +3,10 @@
 缺陷报告阅读指南
 =================
 
-.. image:: ../../images/bug_report.png
-            :align: center
+.. figure:: ../../images/bug_report.png
+        :align: center
 
-|
+        缺陷报告示意图
 
 上面的图像是 Omninotes 的一个错误报告，用户在旋转屏幕后搜索栏消失了。
 因此，这违反了 ``搜索框在旋转屏幕后需要任然存在`` 这一性质。
